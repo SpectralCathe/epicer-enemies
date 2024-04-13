@@ -9,7 +9,7 @@ local effects = {
         Description = "",
         Cost = 0,
         Weight = 0,
-        Visible = true,
+        Visible = false,
         Priority = 20,
         SpecialLogic = {
             "Ascension_Purity_MUTA_CDReduc",
