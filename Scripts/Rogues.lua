@@ -27,6 +27,29 @@ local effects = {
         },
         Keyword = { Keyword = "Predator", BoonType = "Activator" },
     },
+    {
+        Name = "A bomb?",
+        ID = "CATHE_Archetype_CataclysmMeme",
+        Description = "Oh my god, JC, a bomb!",
+        Cost = 45,
+        Weight = 1,
+        Visible = true,
+        Priority = 20,
+        AllowedAIArchetypes = {
+            ["rogue"] = true,
+        },
+        SpecialLogic = {
+            "Ascension_Purity_ACT_VitThreshold",          -- Rabbit 4.2
+            "Ascension_Purity_MUTA_EmulateSpontCombSI",   -- Nymph 5.3
+            "Ascension_Centurion_MUTA_EmulateSupernova",  -- Hope 4.1
+        },
+        Artifacts = {
+            "Artifact_AngelsEgg",
+            "Artifact_Cataclysm",
+        },
+        Keyword = { Keyword = "Purity", BoonType = "Activator" },
+    },
+    -- These do not work as Manticore 5.2 checks for player
     -- {
     --     Name = "Crouching manticore",
     --     ID = "CATHE_Archetype_RoguePaucityBHHide",
