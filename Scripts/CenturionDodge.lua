@@ -28,6 +28,45 @@ local effects = {
         },
         Keyword = { Keyword = "Centurion", BoonType = "Activator" },
     },
+    {
+        Name = "The Drunken Fist",
+        ID = "CATHE_Archetype_CenturionVertigo",
+        Description = "We’ll get hit by you next time!",
+        Cost = 25,
+        Weight = 1,
+        Visible = true,
+        Priority = 20,
+        AllowedAIArchetypes = {
+            ["rogue"] = true,
+            ["berserker"] = true,
+        },
+        SpecialLogic = {
+            "Ascension_Centurion_ACT_MissedByAttack",  -- Key 4.1
+        },
+        Artifacts = {
+            "Artifact_Vertigo",
+            "Artifact_Desperation",
+        },
+        ExtendedStats = {
+            {
+                StatID = "DodgeFatigue_AddAmount",
+                Amount = 57
+            }
+        },
+        FlexStats = {
+            {
+                Type = "Attribute",
+                Stat = "FINESSE",
+                Amount = 50
+            },
+            {
+                Type = "Attribute",
+                Stat = "INTELLIGENCE",
+                Amount = -20
+            },
+        },
+        Keyword = { Keyword = "Centurion", BoonType = "Activator" },
+    },
 }
 
 for _,effect in ipairs(effects) do
