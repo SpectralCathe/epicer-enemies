@@ -1,24 +1,29 @@
 {
     "Scripts": [
         { "Context": "Shared", "Path": "Epip/Scripts/Default.lua", "PathRoot": "user", "ModTable": "EpipEncounters" },
+        { "Context": "Shared", "Path": "Epip/Scripts/Keywords.lua", "PathRoot": "user", "ModTable": "EpipEncounters" },
+
+        { "Context": "Shared", "Path": "Epip/Scripts/Artifacts.lua", "PathRoot": "user", "ModTable": "EpipEncounters" },
 
         { "Context": "Shared", "Path": "Epip/Scripts/Abeyance.lua", "PathRoot": "user", "ModTable": "EpipEncounters" },
-        { "Context": "Shared", "Path": "Epip/Scripts/Archers.lua", "PathRoot": "user", "ModTable": "EpipEncounters" },
-        { "Context": "Shared", "Path": "Epip/Scripts/Artifacts.lua", "PathRoot": "user", "ModTable": "EpipEncounters" },
-        { "Context": "Shared", "Path": "Epip/Scripts/Bomber.lua", "PathRoot": "user", "ModTable": "EpipEncounters" },
-        { "Context": "Shared", "Path": "Epip/Scripts/Brawlers.lua", "PathRoot": "user", "ModTable": "EpipEncounters" },
+        { "Context": "Shared", "Path": "Epip/Scripts/Purity.lua", "PathRoot": "user", "ModTable": "EpipEncounters" },
+        { "Context": "Shared", "Path": "Epip/Scripts/VS.lua", "PathRoot": "user", "ModTable": "EpipEncounters" },
+        { "Context": "Shared", "Path": "Epip/Scripts/Ward.lua", "PathRoot": "user", "ModTable": "EpipEncounters" },
+
         { "Context": "Shared", "Path": "Epip/Scripts/CelestialHealer.lua", "PathRoot": "user", "ModTable": "EpipEncounters" },
-        { "Context": "Shared", "Path": "Epip/Scripts/CelestialOffensive.lua", "PathRoot": "user", "ModTable": "EpipEncounters" },
-        { "Context": "Shared", "Path": "Epip/Scripts/Centurion.lua", "PathRoot": "user", "ModTable": "EpipEncounters" },
         { "Context": "Shared", "Path": "Epip/Scripts/CenturionDefiance.lua", "PathRoot": "user", "ModTable": "EpipEncounters" },
         { "Context": "Shared", "Path": "Epip/Scripts/CenturionDodge.lua", "PathRoot": "user", "ModTable": "EpipEncounters" },
+        { "Context": "Shared", "Path": "Epip/Scripts/CelestialOffensive.lua", "PathRoot": "user", "ModTable": "EpipEncounters" },
         { "Context": "Shared", "Path": "Epip/Scripts/Elementalist.lua", "PathRoot": "user", "ModTable": "EpipEncounters" },
         { "Context": "Shared", "Path": "Epip/Scripts/ElementalistMuta.lua", "PathRoot": "user", "ModTable": "EpipEncounters" },
+        { "Context": "Shared", "Path": "Epip/Scripts/Centurion.lua", "PathRoot": "user", "ModTable": "EpipEncounters" },
         { "Context": "Shared", "Path": "Epip/Scripts/Occultist.lua", "PathRoot": "user", "ModTable": "EpipEncounters" },
-        { "Context": "Shared", "Path": "Epip/Scripts/Paladin.lua", "PathRoot": "user", "ModTable": "EpipEncounters" },
         { "Context": "Shared", "Path": "Epip/Scripts/Predator.lua", "PathRoot": "user", "ModTable": "EpipEncounters" },
-        { "Context": "Shared", "Path": "Epip/Scripts/Rogues.lua", "PathRoot": "user", "ModTable": "EpipEncounters" },
-        { "Context": "Shared", "Path": "Epip/Scripts/VS.lua", "PathRoot": "user", "ModTable": "EpipEncounters" },
-        { "Context": "Shared", "Path": "Epip/Scripts/Ward.lua", "PathRoot": "user", "ModTable": "EpipEncounters" }
+
+        { "Context": "Shared", "Path": "Epip/Scripts/Archers.lua", "PathRoot": "user", "ModTable": "EpipEncounters" },
+        { "Context": "Shared", "Path": "Epip/Scripts/Bomber.lua", "PathRoot": "user", "ModTable": "EpipEncounters" },
+        { "Context": "Shared", "Path": "Epip/Scripts/Brawlers.lua", "PathRoot": "user", "ModTable": "EpipEncounters" },
+        { "Context": "Shared", "Path": "Epip/Scripts/Paladin.lua", "PathRoot": "user", "ModTable": "EpipEncounters" },
+        { "Context": "Shared", "Path": "Epip/Scripts/Rogues.lua", "PathRoot": "user", "ModTable": "EpipEncounters" }
     ]
 }

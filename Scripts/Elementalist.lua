@@ -35,6 +35,9 @@ local effects = {
         Weight = 1,
         Visible = true,
         Priority = 20,
+        Prerequisites = {
+            ["CATHE_Archetype_Prosperity"] = true
+        },
         AllowedAIArchetypes = {
             ["mage"] = true,
             ["warrior"] = true,
@@ -48,7 +51,6 @@ local effects = {
             "Ascension_Elementalist_MUTA_EmulateSkillSI",                  -- Arcanist 5.1
         },
         Keyword = { Keyword = "Elementalist", BoonType = "Activator" },
-        KeywordStats = { "Prosperity" }
     },
 }
 
