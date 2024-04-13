@@ -4,19 +4,38 @@ local EpicEnemies = Epip.GetFeature("Feature_EpicEnemies")
 ---@type Features.EpicEnemies.Effect[]
 local effects = {
     {
-        Name = "Warden",
-        ID = "CATHE_Archetype_CelestialSelfWardEncourage",
-        Description = "Krieg?",
-        Cost = 20,
+        Name = "Coach",
+        ID = "CATHE_Archetype_VSOnCelestial",
+        Description = "Go get 'em, tiger",
+        Cost = 25,
         Weight = 1,
         Visible = true,
         Priority = 20,
-        AllowedAIArchetypes = {
-            ["base"] = true,
-            ["berserker"] = true,
-            ["melee"] = true,
-            ["warrior"] = true,
+        RequiredSkills = {
+            "Shout_RecoverArmour"
         },
+        SpecialLogic = {
+            "Ascension_Benevolence_ACT_AllyArmorToZero",  -- Fortress 3.1
+            "Ascension_Celestial_ACT_BHStacks",           -- Guardsman 4.1
+            "Celestial_MUTA_ViolentStrikeForAlly",        -- Hippo 4.2
+        },
+        ExtendedStats = {
+            {
+                StatID = "FreeReactionCharge",
+                Property1 = "Celestial",
+                Amount = 1,
+            }
+        },
+        Keyword = { Keyword = "Celestial", BoonType = "Activator" },
+    },
+    {
+        Name = "Warden",
+        ID = "CATHE_Archetype_CelestialSelfWardEncourage",
+        Description = "Krieg?",
+        Cost = 35,
+        Weight = 1,
+        Visible = true,
+        Priority = 20,
         RequiredSkills = {
             "Shout_RecoverArmour"
         },
