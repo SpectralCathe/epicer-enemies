@@ -4,6 +4,8 @@
         { "Context": "Shared", "Path": "Epip/Scripts/Keywords.lua", "PathRoot": "user", "ModTable": "EpipEncounters" },
 
         { "Context": "Shared", "Path": "Epip/Scripts/ArtifactWeapons.lua", "PathRoot": "user", "ModTable": "EpipEncounters" },
+        { "Context": "Shared", "Path": "Epip/Scripts/ArtifactArmours.lua", "PathRoot": "user", "ModTable": "EpipEncounters" },
+        { "Context": "Shared", "Path": "Epip/Scripts/ArtifactJewelry.lua", "PathRoot": "user", "ModTable": "EpipEncounters" },
 
         { "Context": "Shared", "Path": "Epip/Scripts/Abeyance.lua", "PathRoot": "user", "ModTable": "EpipEncounters" },
         { "Context": "Shared", "Path": "Epip/Scripts/Purity.lua", "PathRoot": "user", "ModTable": "EpipEncounters" },

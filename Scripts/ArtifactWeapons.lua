@@ -220,11 +220,11 @@ local effects = {
         ID = "CATHE_Archetype_ArtifactRapture_base",
         Description = "",
         Cost = 0,
-        Weight = 1,
+        Weight = 0,
         Visible = false,
         Priority = 20,
         Artifacts = { "Artifact_Rapture" },
-        Keyword = { Keyword = "Celestial", BoonType = "Mutator" },
+        Keyword = { Keyword = "Purity", BoonType = "Activator" },
     },
     {
         Name = "Rapture",
@@ -237,7 +237,7 @@ local effects = {
         Prerequisites = {
             ["CATHE_Archetype_ArtifactRapture_base"] = true,
         },
-        Keyword = { Keyword = "Purity", BoonType = "Activator" },
+        Keyword = { Keyword = "Celestial", BoonType = "Mutator" },
     },
     {
         Name = "Sanguine Harvest",
