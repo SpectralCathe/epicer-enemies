@@ -1,0 +1,41 @@
+---@alias Keyword "ViolentStrike" | "VitalityVoid" | "Predator" | "Elementalist" | "Prosperity" | "Paucity" | "IncarnateChampion" | "Defiance" | "Occultist" | "Disintegrate" | "Wither" | "Centurion" | "Abeyance" | "Benevolence" | "Presence" | "Ward" | "Celestial" | "Purity" | "VolatileArmor" | "Voracity"
+
+---@class Features.EpicEnemies.Effect
+---@field ID string
+---@field Name string
+---@field Description string
+---@field Cost integer
+---@field Weight integer
+---@field DefaultWeight integer
+---@field DefaultCost integer
+---@field ActivationCondition EpicEnemiesActivationCondition
+---@field Category string?
+---@field Visible boolean? Whether this effect appears in tooltips. Defaults to `true`.
+---@field Priority number? Effects with higher priority will attempt to roll first. Defaults to `1`.
+---@field Prerequisites table<string, true>? List of effect IDs to apply beforehand, consuming budget accordingly if not yet applied.
+---@field AllowedAIArchetypes table<aitype, true>? If set, only characters with the specified AI archetypes will be able to roll the effect.
+---@field SpecialLogic? string[] Special logic to grant when the effect is rolled.
+---@field Artifacts string[]? Artifact Powers to grant.
+---@field Keyword? EpicEnemiesKeywordData Used for activation conditions; certain keyword mutators will not be granted if the target has no activators of the keyword.
+---@field Summon? GUID Template to summon.
+---@field Status? EpicEnemiesStatus[]
+---@field ExtendedStats? EpicEnemiesExtendedStat[]
+---@field FlexStats? EpicEnemiesFlexStat[]
+---@field RequiredSkills? string[] The effect is ineligible if the character does not have any of the required skills.
+---@field KeywordStats Keyword[]? List of keywords to grant; i.e. basic activators.
+
+---@class EpicEnemiesStatus
+---@field StatusID string
+---@field Duration integer
+
+---@class EpicEnemiesFlexStat
+---@field Type string
+---@field Stat string
+---@field Amount number
+
+---@class EpicEnemiesExtendedStat
+---@field StatID string The ID of the ExtendedStat.
+---@field Amount number
+---@field Property1 string?
+---@field Property2 string?
+---@field Property3 string?
