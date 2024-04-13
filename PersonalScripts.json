@@ -1,7 +1,8 @@
 {
     "Scripts": [
         { "Context": "Shared", "Path": "Epip/Scripts/Default.lua", "PathRoot": "user", "ModTable": "EpipEncounters" },
-        
+
+        { "Context": "Shared", "Path": "Epip/Scripts/Abeyance.lua", "PathRoot": "user", "ModTable": "EpipEncounters" },
         { "Context": "Shared", "Path": "Epip/Scripts/Archers.lua", "PathRoot": "user", "ModTable": "EpipEncounters" },
         { "Context": "Shared", "Path": "Epip/Scripts/Artifacts.lua", "PathRoot": "user", "ModTable": "EpipEncounters" },
         { "Context": "Shared", "Path": "Epip/Scripts/Bomber.lua", "PathRoot": "user", "ModTable": "EpipEncounters" },
