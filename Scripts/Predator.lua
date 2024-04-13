@@ -40,6 +40,37 @@ local effects = {
         Keyword = { Keyword = "Predator", BoonType = "Activator" },
     },
     {
+        Name = "Symbiote",
+        ID = "CATHE_Archetype_PredatorCelestialVS",
+        Description = "Pleasure doing business with ya",
+        Cost = 30,
+        Weight = 1,
+        Visible = true,
+        Priority = 20,
+        AllowedAIArchetypes = {
+            ["ranger"] = true,
+            ["ranged"] = true,
+        },
+        SpecialLogic = {
+            "Ascension_Celestial_ACT_BHStacks",           -- Guardsman 4.1
+            "Celestial_MUTA_ViolentStrikeForAlly",        -- Hippo 4.2
+            "Ascension_Predator_ACT_AllyViolentStrike",   -- Death 3.1
+        },
+        ExtendedStats = {
+            {
+                StatID = "FreeReactionCharge",
+                Property1 = "Predator",
+                Amount = 1,
+            },
+            {
+                StatID = "FreeReactionCharge",
+                Property1 = "Celestial",
+                Amount = 1,
+            },
+        },
+        Keyword = { Keyword = "Predator", BoonType = "Activator" },
+    },
+    {
         Name = "Bleed for me",
         ID = "CATHE_Archetype_PredatorStatuses",
         Description = "Is it that time of month again?",
