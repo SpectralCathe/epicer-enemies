@@ -16,6 +16,7 @@
         { "Context": "Shared", "Path": "Epip/Scripts/Occultist.lua", "PathRoot": "user", "ModTable": "EpipEncounters" },
         { "Context": "Shared", "Path": "Epip/Scripts/Paladin.lua", "PathRoot": "user", "ModTable": "EpipEncounters" },
         { "Context": "Shared", "Path": "Epip/Scripts/Predator.lua", "PathRoot": "user", "ModTable": "EpipEncounters" },
-        { "Context": "Shared", "Path": "Epip/Scripts/Rogues.lua", "PathRoot": "user", "ModTable": "EpipEncounters" }
+        { "Context": "Shared", "Path": "Epip/Scripts/Rogues.lua", "PathRoot": "user", "ModTable": "EpipEncounters" },
+        { "Context": "Shared", "Path": "Epip/Scripts/VS.lua", "PathRoot": "user", "ModTable": "EpipEncounters" }
     ]
 }
