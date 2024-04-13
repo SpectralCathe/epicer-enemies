@@ -76,7 +76,7 @@ local effects = {
         Description = "You're so pretty under this armour...",
         Cost = 7,
         Weight = 1,
-        Visible = false,
+        Visible = true,
         Priority = 10,
         SpecialLogic = {
             "Ascension_ViolentStrike_MUTA_Acid",  -- Hatchet 5.2
@@ -89,7 +89,7 @@ local effects = {
         Description = "Someone likes it rough",
         Cost = 7,
         Weight = 1,
-        Visible = false,
+        Visible = true,
         Priority = 10,
         SpecialLogic = {
             "Ascension_ViolentStrike_MUTA_Bleeding",  -- Hatchet 5.3
@@ -102,7 +102,7 @@ local effects = {
         Description = "Someone here likes it",
         Cost = 7,
         Weight = 1,
-        Visible = false,
+        Visible = true,
         Priority = 10,
         SpecialLogic = {
             "Ascension_ViolentStrike_MUTA_Suffocating",  -- Hatchet 5.4
@@ -115,7 +115,7 @@ local effects = {
         Description = "We do have a safe word",
         Cost = 8,
         Weight = 1,
-        Visible = false,
+        Visible = true,
         Priority = 10,
         SpecialLogic = {
             "Ascension_ViolentStrike_MUTA_Terrified",  -- Hatchet 5.5
