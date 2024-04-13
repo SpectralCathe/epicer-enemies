@@ -39,6 +39,20 @@ local effects = {
         },
         Keyword = { Keyword = "Predator", BoonType = "Activator" },
     },
+    {
+        Name = "Bleed for me",
+        ID = "CATHE_Archetype_PredatorStatuses",
+        Description = "Is it that time of month again?",
+        Cost = 10,
+        Weight = 1,
+        Visible = true,
+        Priority = 10,
+        SpecialLogic = {
+            "Ascension_Predator_MUTA_Hemorrhage",  -- Tiger 4.2
+            "Ascension_Predator_MUTA_Slowed2",     -- Falcon 5.2
+        },
+        Keyword = { Keyword = "Predator", BoonType = "Mutator" },
+    },
 }
 
 for _,effect in ipairs(effects) do
