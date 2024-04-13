@@ -37,6 +37,7 @@ local effects = {
                 Amount = 1,
             },
         },
+        Keyword = { Keyword = "Predator", BoonType = "Activator" },
     },
 }
 
