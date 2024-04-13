@@ -31,12 +31,14 @@ local effects = {
         Name = "Blood is fuel",
         ID = "CATHE_Archetype_ElementalistPurityAndEmulation",
         Description = "Ouch! That hurts!",
-        Cost = 40,
+        Cost = 10,
         Weight = 1,
         Visible = true,
         Priority = 20,
         Prerequisites = {
-            ["CATHE_Archetype_Prosperity"] = true
+            ["CATHE_Archetype_Prosperity"] = true,
+            ["CATHE_Archetype_PurityOnVit"] = true,
+            ["CATHE_Archetype_PurityOnProsperityLost"] = true,
         },
         AllowedAIArchetypes = {
             ["mage"] = true,
@@ -45,8 +47,6 @@ local effects = {
         },
         SpecialLogic = {
             "Ascension_Elementalist_ACT_AirWater_AllySkills_MK2_HuntsWar", -- Pegasus 3.4
-            "Ascension_Purity_ACT_VitThreshold",                           -- Huntress 4.2
-            "Ascension_Purity_ACT_MK2_ProsperityLost",                     -- Huntress 4.2
             "Ascension_Purity_MUTA_ElemStacksMinus",                       -- Enchantress 5.1
             "Ascension_Elementalist_MUTA_EmulateSkillSI",                  -- Arcanist 5.1
         },

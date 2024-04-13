@@ -16,6 +16,7 @@ local effects = {
         },
         Keyword = { Keyword = "Purity", BoonType = "Mutator" },
     },
+
     {
         Name = "Borrowed time",
         ID = "CATHE_Archetype_PurityOnVit",

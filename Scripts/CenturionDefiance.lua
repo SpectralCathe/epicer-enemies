@@ -11,6 +11,9 @@ local effects = {
         Weight = 1,
         Visible = true,
         Priority = 20,
+        Prerequisites = {
+            ["CATHE_Archetype_Defiance"] = true,
+        },
         RequiredSkills = {
             "Target_DualWieldingAttack"
         },
@@ -20,7 +23,6 @@ local effects = {
             "Ascension_Centurion_MUTA_EmulateDragonBlaze"  -- Dragon 5.3
         },
         Keyword = { Keyword = "Centurion", BoonType = "Activator" },
-        KeywordStats = { "Defiance" }
     },
     {
         Name = "BlyadSuka",
@@ -30,6 +32,9 @@ local effects = {
         Weight = 1,
         Visible = true,
         Priority = 20,
+        Prerequisites = {
+            ["CATHE_Archetype_Defiance"] = true,
+        },
         RequiredSkills = {
             "Target_HeavyAttack"
         },
@@ -38,7 +43,6 @@ local effects = {
             "Ascension_Centurion_MUTA_SIRupturedTendons",    -- The Centurion 5.1
         },
         Keyword = { Keyword = "Centurion", BoonType = "Activator" },
-        KeywordStats = { "Defiance" }
     },
 }
 
