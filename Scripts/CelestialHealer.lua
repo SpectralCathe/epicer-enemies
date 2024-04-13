@@ -106,6 +106,23 @@ local effects = {
         },
         Keyword = { Keyword = "Celestial", BoonType = "Activator" },
     },
+    {
+        Name = "Koolaidman",
+        ID = "CATHE_Archetype_CelestialBuffsWeak",
+        Description = "You can’t harm a combat medic",
+        Cost = 25,
+        Weight = 1,
+        Visible = true,
+        Priority = 20,
+        AllowedAIArchetypes = {
+            ["base"] = true
+        },
+        SpecialLogic = {
+            "Ascension_Celestial_ACT_BHStacks",                   -- Guardsman 4.1
+            "Ascension_Celestial_MUTA_ViolentStrikeForAlly",      -- Hyppo 4.2
+        },
+        Keyword = { Keyword = "Celestial", BoonType = "Activator" },
+    },
 }
 
 for _,effect in ipairs(effects) do
