@@ -10,7 +10,7 @@ local effects = {
         Cost = 25,
         Weight = 1,
         Visible = true,
-        Priority = 20,
+        Priority = 35,
         Prerequisites = {},
         AllowedAIArchetypes = {
             ["healer"] = true,
@@ -45,7 +45,7 @@ local effects = {
         ExtendedStats = {
             {
                 StatID = "FreeReactionCharge",
-                Property1 = "Occultist",
+                Property1 = "Celectial",
                 Amount = 1,
             }
         },
@@ -81,7 +81,7 @@ local effects = {
         Name = "Good girl",
         ID = "CATHE_Archetype_CelestialBuffs",
         Description = "You know who you are",
-        Cost = 25,
+        Cost = 35,
         Weight = 1,
         Visible = true,
         Priority = 20,
