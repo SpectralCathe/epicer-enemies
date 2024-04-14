@@ -12,6 +12,17 @@ Requires Epip developer mode at the moment!
 Extract everything into: `C:\Users\[user]\Documents\Larian Studios\Divinity Original Sin 2 Definitive Edition\Osiris Data\Epip\`
 
 ### Configuration
+#### Enable Epip developer mode:
+Create `OsirisExtenderSettings.json` in `C:\SteamLibrary\steamapps\common\Divinity Original Sin 2\DefEd\bin create or find` with contents:
+
+```
+"LogCompile": false,
+"CreateConsole": false,
+"EnableLogging": false,
+"LogRuntime": false,
+"DeveloperMode": true
+```
+        
 #### In-game (first time setup)
 Go to Epip Settings > Epic Enemies 
 * Set points to 100
