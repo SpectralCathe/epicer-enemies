@@ -117,12 +117,13 @@ local effects = {
         },
         Keyword = { Keyword = "Celestial", BoonType = "Activator" },
     },
+    -- Way too cancerous on Base ai
     {
         Name = "Koolaidman",
         ID = "CATHE_Archetype_CelestialBuffsWeak",
         Description = "You can’t harm a combat medic",
         Cost = 25,
-        Weight = 1,
+        Weight = 0,
         Visible = true,
         Priority = 100,
         Prerequisites = {
