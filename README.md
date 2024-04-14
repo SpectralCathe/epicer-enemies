@@ -14,10 +14,10 @@ Extract everything into: `C:\Users\[user]\Documents\Larian Studios\Divinity Orig
 ### Configuration
 #### In-game (first time setup)
 Go to Epip Settings > Epic Enemies 
-* Set points to 50  
+* Set points to 100
+* Set normal enemy point multiplier to 1.5  
+* Set boss point multiplier to 1.5  
 * Set every category weight multiplier to 0  
-* Set normal enemy point multiplier to 1  
-* Set boss point multiplier to 1  
 
 #### Scripts
 You can disable parts that you don't like in `PersonalScripts.json`  
