@@ -3,6 +3,22 @@ local EpicEnemies = Epip.GetFeature("Feature_EpicEnemies")
 -- List of all Cathes's epicer effects
 ---@type Features.EpicEnemies.Effect[]
 local effects = {
+    -- MUTATORS
+    {
+        Name = "Kraken statuses",
+        ID = "CATHE_Archetype_ElementalistMutaKraken51",
+        Description = "And make it hurt",
+        Cost = 10,
+        Weight = 5,
+        Visible = true,
+        Priority = 20,
+        SpecialLogic = {
+            "Ascension_Elementalist_MUTA_DoTs",  -- Kraken 5.1
+        },
+        Keyword = { Keyword = "Elementalist", BoonType = "Mutator" },
+    },
+
+    -- EFFECTS
     {
         Name = "Fire support",
         ID = "CATHE_Archetype_ElementalistSupport",
@@ -10,7 +26,10 @@ local effects = {
         Cost = 25,
         Weight = 1,
         Visible = true,
-        Priority = 20,
+        Priority = 100,
+        Prerequisites = {
+            ["CATHE_Archetype_Base"] = true,
+        },
         AllowedAIArchetypes = {
             ["mage"] = true,
         },
@@ -34,8 +53,9 @@ local effects = {
         Cost = 10,
         Weight = 1,
         Visible = true,
-        Priority = 20,
+        Priority = 100,
         Prerequisites = {
+            ["CATHE_Archetype_Base"] = true,
             ["CATHE_Archetype_Prosperity"] = true,
             ["CATHE_Archetype_PurityOnVit"] = true,
             ["CATHE_Archetype_PurityOnProsperityLost"] = true,

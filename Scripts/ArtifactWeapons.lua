@@ -6,10 +6,10 @@ local effects = {
     -- The Butcher's Disciple - no
     {
         Name = "The Chthonian",
-        ID = "CATHE_Archetype_ArtifactCthonian",
+        ID = "CATHE_Artifact_Cthonian",
         Description = "Survival of the fittest.",
-        Cost = 10,
-        Weight = 1,
+        Cost = 14,
+        Weight = 0.3,
         Visible = true,
         Priority = 20,
         AllowedAIArchetypes = {
@@ -23,7 +23,7 @@ local effects = {
     },
     {
         Name = "Famine",
-        ID = "CATHE_Archetype_ArtifactFamine",
+        ID = "CATHE_Artifact_Famine",
         Description = "Behold the black rider, with a pair of balances in his hand, to judge who should suffer and who should flourish.",
         Cost = 10,
         Weight = 1,
@@ -35,10 +35,10 @@ local effects = {
     -- Golem - no
     {
         Name = "Vertigo",
-        ID = "CATHE_Archetype_ArtifactVertigo",
+        ID = "CATHE_Artifact_Vertigo",
         Description = "I'll put it on your tab.",
         Cost = 7,
-        Weight = 1,
+        Weight = 0.1,
         Visible = true,
         Priority = 20,
         AllowedAIArchetypes = {
@@ -53,7 +53,7 @@ local effects = {
     },
     {
         Name = "Convergence",
-        ID = "CATHE_Archetype_ArtifactConvergence",
+        ID = "CATHE_Artifact_Convergence",
         Description = "Focus.",
         Cost = 15,
         Weight = 1,
@@ -65,7 +65,7 @@ local effects = {
     },
     {
         Name = "Expedition",
-        ID = "CATHE_Archetype_ArtifactExpedition",
+        ID = "CATHE_Artifact_Expedition",
         Description = "It's a dangerous business, going out your door.",
         Cost = 5,
         Weight = 1,
@@ -77,10 +77,10 @@ local effects = {
     -- Hibernaculum	- later
     {
         Name = "Momentum",
-        ID = "CATHE_Archetype_ArtifactMomentum",
+        ID = "CATHE_Artifact_Momentum",
         Description = "A body in motion stays in motion, until it gets shot with this.",
         Cost = 12,
-        Weight = 1,
+        Weight = 0.4,
         Visible = true,
         Priority = 20,
         AllowedAIArchetypes = {
@@ -97,10 +97,10 @@ local effects = {
     -- Thirst - crit so useless
     {
         Name = "Wraith",
-        ID = "CATHE_Archetype_ArtifactWraith",
+        ID = "CATHE_Artifact_Wraith",
         Description = "Just as you escape, I have arrived.",
         Cost = 5,
-        Weight = 1,
+        Weight = 0.2,
         Visible = true,
         Priority = 20,
         AllowedAIArchetypes = {
@@ -116,10 +116,10 @@ local effects = {
     -- Malleus Maleficarum - won't work
     {
         Name = "Gluttony",
-        ID = "CATHE_Archetype_ArtifactGluttony",
+        ID = "CATHE_Artifact_Gluttony",
         Description = "Without satiety, appetite grows to madness.",
         Cost = 13,
-        Weight = 1,
+        Weight = 0.1,
         Visible = true,
         Priority = 20,
         Artifacts = { "Artifact_Gluttony" },
@@ -129,7 +129,7 @@ local effects = {
     -- Nightmare - no
     {
         Name = "Pestilence",
-        ID = "CATHE_Archetype_ArtifactPestilence",
+        ID = "CATHE_Artifact_Pestilence",
         Description = "Behold the white rider, who wears a fever crown, and cuts down kings without army or sword.",
         Cost = 13,
         Weight = 1,
@@ -142,7 +142,7 @@ local effects = {
     -- Eclipse - no
     {
         Name = "Obelisk",
-        ID = "CATHE_Archetype_ArtifactObelisk",
+        ID = "CATHE_Artifact_Obelisk",
         Description = "While this pillar stands, your enemies shall fall.",
         Cost = 10,
         Weight = 1,
@@ -155,10 +155,10 @@ local effects = {
     -- The Zodiac - per build
     {
         Name = "Blackglass Brand",
-        ID = "CATHE_Archetype_ArtifactBlackglassBrand",
+        ID = "CATHE_Artifact_BlackglassBrand",
         Description = "A single blunder will suffice to burden blood with plague and ice.",
         Cost = 10,
-        Weight = 1,
+        Weight = 2,
         Visible = true,
         Priority = 20,
         Artifacts = { "Artifact_BlackglassBrand" },
@@ -179,7 +179,7 @@ local effects = {
     },
     {
         Name = "Gram, Sword of Grief",
-        ID = "CATHE_Archetype_ArtifactGramSwordOfGrief",
+        ID = "CATHE_Artifact_GramSwordOfGrief",
         Description = "Greatness at the cost of goodness.",
         Cost = 10,
         Weight = 1,
@@ -190,7 +190,7 @@ local effects = {
     },
     {
         Name = "Judgement",
-        ID = "CATHE_Archetype_ArtifactJudgement",
+        ID = "CATHE_Artifact_Judgement",
         Description = "I AM THE LAW",
         Cost = 20,
         Weight = 1,
@@ -201,7 +201,7 @@ local effects = {
     },
     {
         Name = "Lambent Blade",
-        ID = "CATHE_Archetype_ArtifactLambentBlade",
+        ID = "CATHE_Artifact_LambentBlade",
         Description = "Brighter than hope, swifter than defeat.",
         Cost = 5,
         Weight = 1,
@@ -214,10 +214,10 @@ local effects = {
     -- Rod of Abeyance - no
     -- Rod of Command - no
     -- Rod of Conviction - volatile armor so no
-    -- Pariah - too much power so
+    -- Pariah - too much power so no
     {
         Name = "Rapture_base",
-        ID = "CATHE_Archetype_ArtifactRapture_base",
+        ID = "CATHE_Artifact_Rapture_base",
         Description = "",
         Cost = 0,
         Weight = 0,
@@ -228,20 +228,20 @@ local effects = {
     },
     {
         Name = "Rapture",
-        ID = "CATHE_Archetype_ArtifactRapture",
+        ID = "CATHE_Artifact_Rapture",
         Description = "Hide us from the face of the one who sits upon the throne.",
         Cost = 15,
         Weight = 1,
         Visible = true,
         Priority = 20,
         Prerequisites = {
-            ["CATHE_Archetype_ArtifactRapture_base"] = true,
+            ["CATHE_Artifact_Rapture_base"] = true,
         },
         Keyword = { Keyword = "Celestial", BoonType = "Mutator" },
     },
     {
         Name = "Sanguine Harvest",
-        ID = "CATHE_Archetype_ArtifactSanguineHarvest",
+        ID = "CATHE_Artifact_SanguineHarvest",
         Description = "The tranquil spirit reaps a mortal harvest.",
         Cost = 10,
         Weight = 1,
@@ -249,7 +249,7 @@ local effects = {
         Priority = 20,
         RequiredSkills = { "Target_Restoration" },
         Prerequisites = {
-            ["CATHE_Archetype_ArtifactRapture_base"] = true,
+            ["CATHE_Artifact_Rapture_base"] = true,
         },
         Artifacts = { "Artifact_SanguineHarvest" },
     },

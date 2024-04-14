@@ -12,17 +12,17 @@ local effects = {
     -- Consecration - per build
     {
         Name = "Desperation",
-        ID = "CATHE_Archetype_ArtifactDesperation",
+        ID = "CATHE_Artifact_Desperation",
         Description = "You do not realize what you have to lose, until so very little remains.",
         Cost = 7,
-        Weight = 1,
+        Weight = 0.2,
         Visible = true,
         Priority = 20,
         Artifacts = { "Artifact_Desperation" },
     },
     {
         Name = "Godspeed",
-        ID = "CATHE_Archetype_ArtifactGodspeed",
+        ID = "CATHE_Artifact_Godspeed",
         Description = "Righteousness finds its mark more swiftly than the arrow.",
         Cost = 5,
         Weight = 1,
@@ -36,7 +36,7 @@ local effects = {
     -- Salamander - no
     {
         Name = "Silkclimb",
-        ID = "CATHE_Archetype_ArtifactSilkclimb",
+        ID = "CATHE_Artifact_Silkclimb",
         Description = "Weaver departed, the net remains.",
         Cost = 5,
         Weight = 0.2,
@@ -48,7 +48,7 @@ local effects = {
     -- Vortex - no
     {
         Name = "Abyss_base",
-        ID = "CATHE_Archetype_ArtifactAbyss_base",
+        ID = "CATHE_Artifact_Abyss_base",
         Description = "",
         Cost = 0,
         Weight = 0,
@@ -59,14 +59,14 @@ local effects = {
     },
     {
         Name = "Abyss",
-        ID = "CATHE_Archetype_ArtifactAbyss",
+        ID = "CATHE_Artifact_Abyss",
         Description = "Older than darkness, crueler than time",
         Cost = 7,
         Weight = 1,
         Visible = true,
         Priority = 20,
         Prerequisites = {
-            ["CATHE_Archetype_ArtifactAbyss_base"] = true,
+            ["CATHE_Artifact_Abyss_base"] = true,
         },
         Keyword = { Keyword = "ViolentStrike", BoonType = "Mutator" },
     },
@@ -76,10 +76,10 @@ local effects = {
     -- Coruscating Silks - no
     {
         Name = "Empyrean Vestments",
-        ID = "CATHE_Archetype_ArtifactEmpyreanVestments",
+        ID = "CATHE_Artifact_EmpyreanVestments",
         Description = "Immutable as destiny.",
         Cost = 12,
-        Weight = 1,
+        Weight = 0.2,
         Visible = true,
         Priority = 20,
         Artifacts = { "Artifact_EmpyreanVestments" },
@@ -108,7 +108,7 @@ local effects = {
     -- Misery - per build
     {
         Name = "Serenity",
-        ID = "CATHE_Archetype_ArtifactSerenity",
+        ID = "CATHE_Artifact_Serenity",
         Description = "The stars always smile.",
         Cost = 12,
         Weight = 1,

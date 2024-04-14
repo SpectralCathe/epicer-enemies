@@ -6,25 +6,18 @@ local effects = {
     {
         Name = "Peacock",
         ID = "CATHE_Archetype_PredatorFanOfKnive",
-        Description = "xexe pee kok",
-        Cost = 40,
+        Description = "Ever-opening flower",
+        Cost = 0,
         Weight = 1,
         Visible = true,
-        Priority = 20,
-        AllowedAIArchetypes = {
-            ["rogue"] = true,
+        Priority = 100,
+        Prerequisites = {
+            ["CATHE_Archetype_Base"] = true,
+            ["CATHE_Stat_PredatorBonusReaction"] = true,
+            ["CATHE_Ascension_PredatorFalcon_Base"] = true,
+            ["CATHE_Ascension_PredatorFoK_Base"] = true,
         },
-        SpecialLogic = {
-            "Ascension_Predator_ACT_BHStacks",       -- Falcon 4.2
-            "Ascension_Predator_MUTA_EmulateFoKSI",  -- Manticore 5.3
-        },
-        ExtendedStats = {
-            {
-                StatID = "FreeReactionCharge",
-                Property1 = "Predator",
-                Amount = 1,
-            }
-        },
+        AllowedAIArchetypes = { ["rogue"] = true, },
         Keyword = { Keyword = "Predator", BoonType = "Activator" },
     },
     {
@@ -34,10 +27,11 @@ local effects = {
         Cost = 45,
         Weight = 1,
         Visible = true,
-        Priority = 20,
-        AllowedAIArchetypes = {
-            ["rogue"] = true,
+        Priority = 100,
+        Prerequisites = {
+            ["CATHE_Archetype_Base"] = true,
         },
+        AllowedAIArchetypes = { ["rogue"] = true, },
         SpecialLogic = {
             "Ascension_Purity_ACT_VitThreshold",          -- Rabbit 4.2
             "Ascension_Purity_MUTA_EmulateSpontCombSI",   -- Nymph 5.3

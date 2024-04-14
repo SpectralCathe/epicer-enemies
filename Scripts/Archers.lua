@@ -7,49 +7,39 @@ local effects = {
         Name = "Finisher",
         ID = "CATHE_Archetype_PredatorVulture",
         Description = "Finish him off!",
-        Cost = 20,
+        Cost = -5,
         Weight = 1,
         Visible = true,
-        Priority = 20,
+        Priority = 100,
+        Prerequisites = {
+            ["CATHE_Archetype_Base"] = true,
+            ["CATHE_Stat_PredatorBonusReaction"] = true,
+            ["CATHE_Ascension_Predator0Armor_Base"] = true,
+            ["CATHE_Ascension_PredatorCritOnLow_Base"] = true,
+        },
         AllowedAIArchetypes = {
             ["ranger"] = true,
             ["ranged"] = true,
-        },
-        SpecialLogic = {
-            "Ascension_Predator_ACT_AllyAoO",                 -- Vulture 4.2
-            "Ascension_Predator_MUTA_CritFromTargetLowLife",  -- Vulture 5.2
-        },
-        ExtendedStats = {
-            {
-                StatID = "FreeReactionCharge",
-                Property1 = "Predator",
-                Amount = 1,
-            }
         },
         Keyword = { Keyword = "Predator", BoonType = "Activator" },
     },
     {
-        Name = "Falcon",
+        Name = "Warbird",
         ID = "CATHE_Archetype_PredatorFalcon",
         Description = "Warriors on wings!",
-        Cost = 30,
+        Cost = 0,
         Weight = 2,
         Visible = true,
-        Priority = 20,
+        Priority = 100,
+        Prerequisites = {
+            ["CATHE_Archetype_Base"] = true,
+            ["CATHE_Stat_PredatorBonusReaction"] = true,
+            ["CATHE_Ascension_VSArcher_Base"] = true,
+            ["CATHE_Ascension_PredatorFalcon_Base"] = true,
+        },
         AllowedAIArchetypes = {
             ["ranger"] = true,
             ["ranged"] = true,
-        },
-        SpecialLogic = {
-            "Ascension_Predator_ACT_BHStacks",          -- Falcon 4.2
-            "Ascension_ViolentStrike_ACT_DamageAtOnce", -- Archer 4.1
-        },
-        ExtendedStats = {
-            {
-                StatID = "FreeReactionCharge",
-                Property1 = "Predator",
-                Amount = 1,
-            }
         },
         Keyword = { Keyword = "Predator", BoonType = "Activator" },
     },
@@ -57,46 +47,87 @@ local effects = {
         Name = "Undertaker",
         ID = "CATHE_Archetype_PredatorCorpses",
         Description = "Lost in Necrooo-palas",
-        Cost = 30,
+        Cost = 0,
         Weight = 1,
         Visible = true,
-        Priority = 20,
+        Priority = 100,
+        Prerequisites = {
+            ["CATHE_Archetype_Base"] = true,
+            ["CATHE_Stat_PredatorBonusReaction"] = true,
+            ["CATHE_Ascension_VSArcher_Base"] = true,
+            ["CATHE_Ascension_PredatorCorpse_Base"] = true,
+        },
+        AllowedAIArchetypes = {
+            ["ranger"] = true,
+            ["ranged"] = true,
+        },
+        Artifacts = { "Artifact_NecromancersRaiment", },
+        Keyword = { Keyword = "Predator", BoonType = "Activator" },
+    },
+    {
+        Name = "Spider Queen",
+        ID = "CATHE_Archetype_PredatorOccultistSkitters",
+        Description = "Watch them dance!",
+        Cost = -10,
+        Weight = 0.3,
+        Visible = true,
+        Priority = 100,
+        Prerequisites = {
+            ["CATHE_Archetype_Base"] = true,
+            ["CATHE_Stat_PredatorBonusReaction"] = true,
+            ["CATHE_Ascension_PredatorCorpse_Base"] = true,
+            ["CATHE_Ascension_PredatorSkitterer_Base"] = true,
+        },
         AllowedAIArchetypes = {
             ["ranger"] = true,
             ["ranged"] = true,
         },
         SpecialLogic = {
-            "Ascension_Predator_ACT_NearCorpseEndOfTurn",  -- Extinction 3.2
-            "Ascension_ViolentStrike_ACT_DamageAtOnce",    -- Archer 4.1
+            "Ascension_Occultist_ACT_AlliedSummonKilled",  -- Supplicant 3.2
+            "Ascension_Occultist_MUTA_NowBasicAttack",     -- Imp 5.1
         },
         Artifacts = {
-            "Artifact_NecromancersRaiment",
+            "Artifact_Zenith",
+            "Artifact_Expedition",
         },
         ExtendedStats = {
             {
                 StatID = "FreeReactionCharge",
-                Property1 = "Predator",
+                Property1 = "Occultist",
                 Amount = 1,
-            }
+            },
         },
         Keyword = { Keyword = "Predator", BoonType = "Activator" },
     },
     {
-        Name = "Scavenger",
-        ID = "CATHE_Archetype_ArcherVSEleArrows",
-        Description = "What pain will it take to satisfy?",
-        Cost = 10,
+        Name = "Symbiote",
+        ID = "CATHE_Archetype_PredatorCelestialVS",
+        Description = "Pleasure doing business with ya",
+        Cost = 20,
         Weight = 1,
         Visible = true,
-        Priority = 10,
+        Priority = 100,
+        Prerequisites = {
+            ["CATHE_Archetype_Base"] = true,
+            ["CATHE_Stat_PredatorBonusReaction"] = true,
+            ["CATHE_Ascension_PredatorOnVS_Base"] = true,
+        },
         AllowedAIArchetypes = {
             ["ranger"] = true,
             ["ranged"] = true,
         },
         SpecialLogic = {
-            "Ascension_ViolentStrike_MUTA_EleArrowheads",  -- Archer 5.2
+            "Ascension_Celestial_ACT_BHStacks",           -- Guardsman 4.1
+            "Celestial_MUTA_ViolentStrikeForAlly",        -- Hippo 4.2
         },
-        Keyword = { Keyword = "ViolentStrike", BoonType = "Mutator" },
+        ExtendedStats = {
+            {
+                StatID = "FreeReactionCharge",
+                Property1 = "Celestial",
+                Amount = 1,
+            },
+        },
+        Keyword = { Keyword = "Predator", BoonType = "Activator" },
     },
 }
 

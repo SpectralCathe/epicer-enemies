@@ -34,9 +34,9 @@ local effects = {
         ID = "CATHE_Archetype_WardAdaptation",
         Description = "Like water",
         Cost = 15,
-        Weight = 1,
+        Weight = 5,
         Visible = true,
-        Priority = 10,
+        Priority = 20,
         SpecialLogic = {
             "Ascension_Ward_MUTA_AdaptationStacks",
         },
@@ -47,9 +47,9 @@ local effects = {
         ID = "CATHE_Archetype_WardAdaptation",
         Description = "You really shook up my internal organs!",
         Cost = 15,
-        Weight = 1,
+        Weight = 5,
         Visible = true,
-        Priority = 10,
+        Priority = 20,
         SpecialLogic = {
             "Ascension_Ward_MUTA_HealAndRemoveBHStacks",
         },

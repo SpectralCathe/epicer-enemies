@@ -10,7 +10,10 @@ local effects = {
         Cost = 25,
         Weight = 1,
         Visible = true,
-        Priority = 20,
+        Priority = 100,
+        Prerequisites = {
+            ["CATHE_Archetype_Base"] = true,
+        },
         AllowedAIArchetypes = {
             ["bomber"] = true,
         },
