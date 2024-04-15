@@ -56,7 +56,7 @@ local effects = {
         ExtendedStats = {
             {
                 StatID = "DodgeFatigue_AddAmount",
-                Amount = 57
+                Amount = -57
             }
         },
         FlexStats = {
