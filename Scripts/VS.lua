@@ -10,7 +10,7 @@ local effects = {
         Cost = 15,
         Weight = 0,
         Visible = false,
-        Priority = 15,
+        Priority = 20,
         SpecialLogic = {
             "Ascension_ViolentStrike_ACT_DamageAtOnce",    -- Archer 4.1
         },
@@ -23,7 +23,7 @@ local effects = {
         Cost = 0,
         Weight = 1,
         Visible = true,
-        Priority = 15,
+        Priority = 20,
         Prerequisites = {
             ["CATHE_Ascension_VSArcher_Base"] = true,
         },
