@@ -1,4 +1,4 @@
-local EpicEnemies = Epip.GetFeature("Feature_EpicEnemies")
+local EpicEnemies = Mods.EpipEncounters.Epip.GetFeature("Feature_EpicEnemies")
 
 ---@type Features.EpicEnemies.Effect[]
 local effects = {

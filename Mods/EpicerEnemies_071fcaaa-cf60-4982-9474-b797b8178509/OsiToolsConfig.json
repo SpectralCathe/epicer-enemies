@@ -1,0 +1,9 @@
+{
+    "RequiredExtensionVersion": 60,
+    "ModTable": "EpicerEnemies",
+    "FeatureFlags": [
+        "OsirisExtensions",
+        "Lua",
+        "Preprocessor"
+    ]
+}

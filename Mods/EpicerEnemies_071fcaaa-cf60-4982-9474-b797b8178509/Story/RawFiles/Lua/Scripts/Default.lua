@@ -1,4 +1,4 @@
-local EpicEnemies = Epip.GetFeature("Feature_EpicEnemies")
+local EpicEnemies = Mods.EpipEncounters.Epip.GetFeature("Feature_EpicEnemies")
 
 -- Defining archetype base effect and all "no archetype" archetypes
 ---@type Features.EpicEnemies.Effect[]

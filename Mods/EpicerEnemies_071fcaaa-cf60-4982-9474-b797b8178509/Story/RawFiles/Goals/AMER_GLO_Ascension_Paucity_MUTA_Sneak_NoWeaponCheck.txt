@@ -1,0 +1,19 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//If you activate Paucity when you have a dagger equipped, sneak and become invisible until the start of your next turn.
+
+PROC PROC_AMER_KeywordStat_Paucity_Activate((CHARACTERGUID)_Char, (CHARACTERGUID)_Source, (CHARACTERGUID)_Attacker, (REAL)_Duration)
+AND
+DB_AMER_Ascension_SpecialLogic(_Source, "Ascension_Paucity_MUTA_Sneak_NoWeaponCheck", _)
+THEN
+//PROC_AMER_GEN_ApplyStatusUntilNextTurn(_Char, "INVISIBLE", 6.0, 0, _Source);
+//PROC_AMER_GEN_DoFreeSneak(_Char);
+PROC_AMER_GEN_DoFreeSneak_Delayed_Invis_UntilMyTurn(_Char, 1300);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_UI_Ascension_NodeRewards"

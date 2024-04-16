@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<save>
+    <header version="2" />
+    <version major="3" minor="6" revision="6" build="0" />
+    <region id="MetaData">
+        <node id="root">
+            <attribute id="Module" value="071fcaaa-cf60-4982-9474-b797b8178509" type="23" />
+            <attribute id="Name" value="EpicerEnemies" type="23" />
+            <attribute id="Type" value="Add-on" type="23" />
+            <attribute id="UUID" value="a71ee298-608b-4da6-89b0-a753728ddf2c" type="23" />
+        </node>
+    </region>
+</save>

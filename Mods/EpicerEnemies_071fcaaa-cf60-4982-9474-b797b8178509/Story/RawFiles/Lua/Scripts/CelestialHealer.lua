@@ -1,4 +1,4 @@
-local EpicEnemies = Epip.GetFeature("Feature_EpicEnemies")
+local EpicEnemies = Mods.EpipEncounters.Epip.GetFeature("Feature_EpicEnemies")
 
 -- List of all Cathes's epicer effects
 ---@type Features.EpicEnemies.Effect[]

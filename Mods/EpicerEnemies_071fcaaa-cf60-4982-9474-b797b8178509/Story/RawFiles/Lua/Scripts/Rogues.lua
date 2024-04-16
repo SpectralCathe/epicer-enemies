@@ -1,4 +1,4 @@
-local EpicEnemies = Epip.GetFeature("Feature_EpicEnemies")
+local EpicEnemies = Mods.EpipEncounters.Epip.GetFeature("Feature_EpicEnemies")
 
 -- List of all Cathes's epicer effects
 ---@type Features.EpicEnemies.Effect[]
@@ -43,41 +43,46 @@ local effects = {
         },
         Keyword = { Keyword = "Purity", BoonType = "Activator" },
     },
-    -- These do not work as Manticore 5.2 checks for player
-    -- {
-    --     Name = "Crouching manticore",
-    --     ID = "CATHE_Archetype_RoguePaucityBHHide",
-    --     Description = "Hidden dude",
-    --     Cost = 25,
-    --     Weight = 1,
-    --     Visible = true,
-    --     Priority = 20,
-    --     AllowedAIArchetypes = {
-    --         ["rogue"] = true,
-    --     },
-    --     SpecialLogic = {
-    --         "Ascension_Paucity_ACT_BHStacks",  -- Hatchet 4.1
-    --         "Ascension_Paucity_MUTA_Sneak",    -- Manticore 5.2
-    --     },
-    --     Keyword = { Keyword = "Paucity", BoonType = "Activator" },
-    -- },
-    -- {
-    --     Name = "Crouching manticore",
-    --     ID = "CATHE_Archetype_RoguePaucityArmorsHide",
-    --     Description = "Hidden dude",
-    --     Cost = 25,
-    --     Weight = 1,
-    --     Visible = true,
-    --     Priority = 20,
-    --     AllowedAIArchetypes = {
-    --         ["rogue"] = true,
-    --     },
-    --     SpecialLogic = {
-    --         "Ascension_Paucity_ACT_MK2_ArmorDepleted",  -- Archer 4.3
-    --         "Ascension_Paucity_MUTA_Sneak",             -- Manticore 5.2
-    --     },
-    --     Keyword = { Keyword = "Paucity", BoonType = "Activator" },
-    -- },
+    {
+        Name = "Crouching manticore",
+        ID = "CATHE_Archetype_RoguePaucityBHHide",
+        Description = "Hidden dude",
+        Cost = 25,
+        Weight = 1,
+        Visible = true,
+        Priority = 100,
+        Prerequisites = {
+            ["CATHE_Archetype_Base"] = true,
+        },
+        AllowedAIArchetypes = {
+            ["rogue"] = true,
+        },
+        SpecialLogic = {
+            "Ascension_Paucity_ACT_BHStacks",              -- Hatchet 4.1
+            "Ascension_Paucity_MUTA_Sneak_NoWeaponCheck",  -- Manticore 5.2
+        },
+        Keyword = { Keyword = "Paucity", BoonType = "Activator" },
+    },
+    {
+        Name = "This isn't happening!",
+        ID = "CATHE_Archetype_RoguePaucityArmorsHide",
+        Description = "Aaand he's gone",
+        Cost = 25,
+        Weight = 1,
+        Visible = true,
+        Priority = 100,
+        Prerequisites = {
+            ["CATHE_Archetype_Base"] = true,
+        },
+        AllowedAIArchetypes = {
+            ["rogue"] = true,
+        },
+        SpecialLogic = {
+            "Ascension_Paucity_ACT_MK2_ArmorDepleted",     -- Archer 4.3
+            "Ascension_Paucity_MUTA_Sneak_NoWeaponCheck",  -- Manticore 5.2
+        },
+        Keyword = { Keyword = "Paucity", BoonType = "Activator" },
+    },
 }
 
 for _,effect in ipairs(effects) do
