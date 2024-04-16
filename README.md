@@ -5,11 +5,10 @@ https://docs.google.com/document/d/1J-HVy7t9LDHRrMIEFV5_12bemz5FNHkCTytelzH-3ms/
 
 ## Requirements
 Epic Encounters 2, TEST Epip Encounters, Epip Gameplay, Derpy’s Addon  
-Requires Epip developer mode at the moment!  
 
 ## Installation
 ### Setup
-Extract everything into: `C:\Users\[user]\Documents\Larian Studios\Divinity Original Sin 2 Definitive Edition\Osiris Data\Epip\`
+Install .pak from Releases as you would a normal mod. Has to be below Derpy's in load order.
 
 ### Configuration
 #### Enable Epip developer mode:
@@ -29,7 +28,3 @@ Go to Epip Settings > Epic Enemies
 * Set normal enemy point multiplier to 1.5  
 * Set boss point multiplier to 1.5  
 * Set every category weight multiplier to 0  
-
-#### Scripts
-You can disable parts that you don't like in `PersonalScripts.json`  
-Further configuration through `Scripts/*.lua`  
