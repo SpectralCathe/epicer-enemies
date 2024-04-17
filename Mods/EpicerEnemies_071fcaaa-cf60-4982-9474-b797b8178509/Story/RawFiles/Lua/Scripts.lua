@@ -6,6 +6,7 @@ Ext.Require("Scripts/ArtifactArmours.lua")
 Ext.Require("Scripts/ArtifactJewelry.lua")
 
 Ext.Require("Scripts/Abeyance.lua")
+Ext.Require("Scripts/Celestial.lua")
 Ext.Require("Scripts/Predator.lua")
 Ext.Require("Scripts/Purity.lua")
 Ext.Require("Scripts/VS.lua")

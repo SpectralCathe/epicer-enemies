@@ -71,7 +71,7 @@ local effects = {
     },
     {
         Name = "Predator on VS Base",
-        ID = "CATHE_Ascension_PredatorOnVS_Base",
+        ID = "CATHE_Ascension_PredatorOnVS",
         Description = "Predator reactions can be performed when an ally performs a Violent Strike on an enemy you can see.",
         Cost = 10,
         Weight = 0,
@@ -153,7 +153,7 @@ local effects = {
         Name = "Predator range 10m",
         ID = "CATHE_Ascension_PredatorRange10m",
         Description = "Predator reaction range becomes 10m, unless already higher",
-        Cost = 10,
+        Cost = 0,
         Weight = 0,
         Visible = true,
         Priority = 20,
@@ -179,33 +179,6 @@ local effects = {
             ["CATHE_Ascension_PredatorSlowed2_Base"] = true,
         },
         Keyword = { Keyword = "Predator", BoonType = "Mutator" },
-    },
-    {
-        Name = "Symbiote",
-        ID = "CATHE_Archetype_PredatorCelestialVS",
-        Description = "Pleasure doing business with ya",
-        Cost = 20,
-        Weight = 1,
-        Visible = true,
-        Priority = 100,
-        Prerequisites = {
-            ["CATHE_Archetype_Base"] = true,
-            ["CATHE_Stat_PredatorBonusReaction"] = true,
-            ["CATHE_Ascension_PredatorOnVS_Base"] = true,
-        },
-        RequiredSkills = { "Target_DualWieldingAttack" },
-        SpecialLogic = {
-            "Ascension_Celestial_ACT_BHStacks",           -- Guardsman 4.1
-            "Celestial_MUTA_ViolentStrikeForAlly",        -- Hippo 4.2
-        },
-        ExtendedStats = {
-            {
-                StatID = "FreeReactionCharge",
-                Property1 = "Celestial",
-                Amount = 1,
-            },
-        },
-        Keyword = { Keyword = "Predator", BoonType = "Activator" },
     },
 }
 
