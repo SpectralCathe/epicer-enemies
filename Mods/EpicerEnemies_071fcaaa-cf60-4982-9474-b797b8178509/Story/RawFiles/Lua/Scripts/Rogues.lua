@@ -15,9 +15,10 @@ local effects = {
             ["CATHE_Archetype_Base"] = true,
             ["CATHE_Stat_PredatorBonusReaction"] = true,
             ["CATHE_Ascension_PredatorFalcon_Base"] = true,
+            ["CATHE_Ascension_PredatorRange10m"] = true,
             ["CATHE_Ascension_PredatorFoK_Base"] = true,
         },
-        AllowedAIArchetypes = { ["rogue"] = true, },
+        RequiredSkills = { "Target_DualWieldingAttack" },
         Keyword = { Keyword = "Predator", BoonType = "Activator" },
     },
     {
