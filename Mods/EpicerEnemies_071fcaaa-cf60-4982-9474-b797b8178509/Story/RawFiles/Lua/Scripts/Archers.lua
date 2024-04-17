@@ -99,36 +99,6 @@ local effects = {
         },
         Keyword = { Keyword = "Predator", BoonType = "Activator" },
     },
-    {
-        Name = "Symbiote",
-        ID = "CATHE_Archetype_PredatorCelestialVS",
-        Description = "Pleasure doing business with ya",
-        Cost = 20,
-        Weight = 1,
-        Visible = true,
-        Priority = 100,
-        Prerequisites = {
-            ["CATHE_Archetype_Base"] = true,
-            ["CATHE_Stat_PredatorBonusReaction"] = true,
-            ["CATHE_Ascension_PredatorOnVS_Base"] = true,
-        },
-        AllowedAIArchetypes = {
-            ["ranger"] = true,
-            ["ranged"] = true,
-        },
-        SpecialLogic = {
-            "Ascension_Celestial_ACT_BHStacks",           -- Guardsman 4.1
-            "Celestial_MUTA_ViolentStrikeForAlly",        -- Hippo 4.2
-        },
-        ExtendedStats = {
-            {
-                StatID = "FreeReactionCharge",
-                Property1 = "Celestial",
-                Amount = 1,
-            },
-        },
-        Keyword = { Keyword = "Predator", BoonType = "Activator" },
-    },
 }
 
 for _,effect in ipairs(effects) do
