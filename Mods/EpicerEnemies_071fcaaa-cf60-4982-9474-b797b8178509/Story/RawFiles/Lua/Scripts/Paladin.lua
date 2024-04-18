@@ -67,7 +67,7 @@ local effects = {
     {
         Name = "Symbiote",
         ID = "CATHE_Archetype_PredatorCelestialVS",
-        Description = "Pleasure doing business with ya",
+        Description = FormatDescription("Pleasure doing business with ya", "Celestial on BH removal, gives VS. Predator on ally VS (10 m range)."),
         Cost = -6,
         Weight = 1,
         Visible = true,

@@ -1,5 +1,22 @@
 local EpicEnemies = Mods.EpipEncounters.Epip.GetFeature("Feature_EpicEnemies")
 
+
+Mods.EpipEncounters.Epip.ImportGlobals(_G)
+
+
+function FormatDescription( textBig, textSmall )
+    return Text.Format(textBig .. "<br>%s", {
+        FormatArgs = {
+            {
+                Text = textSmall,
+                FontType = Text.FONTS.ITALIC,
+                Color = Color.LARIAN.GRAY,
+            }
+        }
+    })
+end
+
+
 -- Defining archetype base effect and all "no archetype" archetypes
 ---@type Features.EpicEnemies.Effect[]
 local effects = {

@@ -6,7 +6,7 @@ local effects = {
     {
         Name = "Peacock",
         ID = "CATHE_Archetype_PredatorFanOfKnive",
-        Description = "Ever-opening flower",
+        Description = FormatDescription("Ever-opening flower", "Predator on enemy 7 BH, 2/round Fan of Knives on Predator (10 m range)"),
         Cost = 0,
         Weight = 1,
         Visible = true,

@@ -85,9 +85,9 @@ local effects = {
 
     -- MUTATORS
     {
-        Name = "vs Melting",
+        Name = "vs Lust",
         ID = "CATHE_Archetype_VSAcid",
-        Description = "You're so pretty under this armour...",
+        Description = FormatDescription("You're so pretty under this armour...", "VS applies Acid"),
         Cost = 7,
         Weight = 1,
         Visible = true,
@@ -98,9 +98,9 @@ local effects = {
         Keyword = { Keyword = "ViolentStrike", BoonType = "Mutator" },
     },
     {
-        Name = "vs Bleeding",
+        Name = "vs Bleed",
         ID = "CATHE_Archetype_VSBleed",
-        Description = "Someone likes it rough",
+        Description = FormatDescription("Someone likes it rough", "VS applies Bleeding"),
         Cost = 7,
         Weight = 1,
         Visible = true,
@@ -113,7 +113,7 @@ local effects = {
     {
         Name = "vs Choking",
         ID = "CATHE_Archetype_VSSuffocating",
-        Description = "Someone here likes it",
+        Description = FormatDescription("Someone here likes it", "VS applies Suffocating"),
         Cost = 7,
         Weight = 1,
         Visible = true,
@@ -124,9 +124,9 @@ local effects = {
         Keyword = { Keyword = "ViolentStrike", BoonType = "Mutator" },
     },
     {
-        Name = "vs Scary",
+        Name = "vs Fear",
         ID = "CATHE_Archetype_VSTerrified",
-        Description = "We do have a safe word",
+        Description = FormatDescription("We do have a safe word", "VS applies Terrified 2"),
         Cost = 8,
         Weight = 1,
         Visible = true,
@@ -139,8 +139,8 @@ local effects = {
     {
         Name = "Scavenger",
         ID = "CATHE_Archetype_ArcherVSEleArrows",
-        Description = "What pain will it take to satisfy?",
-        Cost = 10,
+        Description = FormatDescription("What pain will it take to satisfy?", "VS gives Elemental Arrowheads"),
+        Cost = 4,
         Weight = 1,
         Visible = true,
         Priority = 20,

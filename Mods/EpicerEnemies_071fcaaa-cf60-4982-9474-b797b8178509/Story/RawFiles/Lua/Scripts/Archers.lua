@@ -6,9 +6,9 @@ local effects = {
     {
         Name = "Finisher",
         ID = "CATHE_Archetype_PredatorVulture",
-        Description = "Finish him off!",
+        Description = FormatDescription("Finish him off!", "1/round Predator when enemy loses armour or below 50% vitality. Gain crit with target missing vitality."),
         Cost = -5,
-        Weight = 1,
+        Weight = 100000,
         Visible = true,
         Priority = 100,
         Prerequisites = {
@@ -26,7 +26,7 @@ local effects = {
     {
         Name = "Warbird",
         ID = "CATHE_Archetype_PredatorFalcon",
-        Description = "Warriors on wings!",
+        Description = FormatDescription("Warriors on wings!", "Predator on enemy 7 BH, VS on 10% vitality damage."),
         Cost = 0,
         Weight = 2,
         Visible = true,
@@ -46,7 +46,7 @@ local effects = {
     {
         Name = "Undertaker",
         ID = "CATHE_Archetype_PredatorCorpses",
-        Description = "Lost in Necrooo-palas",
+        Description = FormatDescription("Lost in Necrooo-palas", "Predator next to a corpse, VS on 10% vitality damage."),
         Cost = 0,
         Weight = 1,
         Visible = true,
@@ -67,7 +67,7 @@ local effects = {
     {
         Name = "Spider Queen",
         ID = "CATHE_Archetype_PredatorOccultistSkitters",
-        Description = "Watch them dance!",
+        Description = FormatDescription("Watch them dance!", "Predator next to a corpse, spawns a Skitterer, Basic attack Occultist on summon death"),
         Cost = -10,
         Weight = 0.3,
         Visible = true,
