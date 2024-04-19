@@ -6,7 +6,7 @@ local effects = {
     {
         Name = "Coach",
         ID = "CATHE_Archetype_VSOnCelestial",
-        Description = "Go get 'em, tiger",
+        Description = FormatDescription("Go get 'em, tiger", "Benevolence on ally 0 armour, Celestial on BH removal, activates VS"),
         Cost = 15,
         Weight = 1,
         Visible = true,

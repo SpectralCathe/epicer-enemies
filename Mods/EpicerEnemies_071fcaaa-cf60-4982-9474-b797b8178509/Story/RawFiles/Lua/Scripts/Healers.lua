@@ -6,7 +6,7 @@ local effects = {
     {
         Name = "First AIDS",
         ID = "CATHE_Archetype_BeneHealer",
-        Description = "When it's needed the most",
+        Description = FormatDescription("When it's needed the most", "Benevolence on ally 0 armour, incurs no BH, emulates Celestial, restores 15% missing vitality, gives 10% Ele res."),
         Cost = -8,
         Weight = 1,
         Visible = true,
@@ -26,41 +26,36 @@ local effects = {
     {
         Name = "Combat medic",
         ID = "CATHE_Archetype_GuardsmanHealer",
-        Description = "She's not my sister",
-        Cost = 25,
-        Weight = 1,
-        Visible = true,
-        Priority = 100,
-        Prerequisites = {
-            ["CATHE_Archetype_Base"] = true,
-        },
-        AllowedAIArchetypes = {
-            ["healer"] = true,
-        },
-        SpecialLogic = {
-            "Ascension_Celestial_ACT_BHStacks",     -- Guardsman 4.1
-            "Ascension_Celestial_MUTA_MagicShell",  -- Stag 4.2
-            "Ascension_Celestial_MUTA_CleanseBH",   -- Goddess 4.2
-        },
-        ExtendedStats = {
-            {
-                StatID = "FreeReactionCharge",
-                Property1 = "Celectial",
-                Amount = 1,
-            }
-        },
-        Keyword = { Keyword = "Celestial", BoonType = "Activator" },
-    },
-    {
-        Name = "Bambi maid",
-        ID = "CATHE_Archetype_HindMaid",
-        Description = "Baaaaah",
+        Description = FormatDescription("She's not my sister", "Celestial on BH removal, apply regen, cleanse T1 and T2."),
         Cost = 15,
         Weight = 1,
         Visible = true,
         Priority = 100,
         Prerequisites = {
             ["CATHE_Archetype_Base"] = true,
+            ["CATHE_Ascension_CelestialBHRemoval"] = true,
+            ["CATHE_Stat_CelestialBonusReaction"] = true,
+        },
+        AllowedAIArchetypes = {
+            ["healer"] = true,
+        },
+        SpecialLogic = {
+            "Ascension_Celestial_MUTA_MagicShell",  -- Stag 4.2
+            "Ascension_Celestial_MUTA_CleanseBH",   -- Goddess 4.2
+        },
+        Keyword = { Keyword = "Celestial", BoonType = "Activator" },
+    },
+    {
+        Name = "Bambi maid",
+        ID = "CATHE_Archetype_HindMaid",
+        Description = FormatDescription("Baaaaah", "Celestial on ally Source spent, haste and cleanse T1 and T2"),
+        Cost = 15,
+        Weight = 1,
+        Visible = true,
+        Priority = 100,
+        Prerequisites = {
+            ["CATHE_Archetype_Base"] = true,
+            ["CATHE_Stat_CelestialBonusReaction2"] = true,
         },
         AllowedAIArchetypes = {
             ["healer"] = true
@@ -71,68 +66,55 @@ local effects = {
             "Ascension_Celestial_MUTA_Haste",              -- Stag 4.1
             "Ascension_Celestial_MUTA_CleanseBH",          -- Goddess 4.2
         },
-        ExtendedStats = {
-            {
-                StatID = "FreeReactionCharge",
-                Property1 = "Celestial",
-                Amount = 2,
-            }
-        },
         Keyword = { Keyword = "Celestial", BoonType = "Activator" },
     },
     {
         Name = "Good girl",
         ID = "CATHE_Archetype_CelestialBuffs",
-        Description = "You know who you are",
-        Cost = 35,
+        Description = FormatDescription("You know who you are", "Celestial on BH removal, apply VS, armour and life regen."),
+        Cost = 15,
         Weight = 1,
         Visible = true,
         Priority = 100,
         Prerequisites = {
             ["CATHE_Archetype_Base"] = true,
+            ["CATHE_Ascension_CelestialBHRemoval"] = true,
+            ["CATHE_Ascension_CelestialVS"] = true,
+            ["CATHE_Stat_CelestialBonusReaction"] = true,
         },
         AllowedAIArchetypes = {
             ["healer"] = true
         },
         SpecialLogic = {
-            "Ascension_Celestial_ACT_BHStacks",                   -- Guardsman 4.1
-            "Ascension_Celestial_MUTA_ViolentStrikeForAlly",      -- Hyppo 4.2
             "Ascension_Celestial_MUTA_ArmorRestoInertiaScaling",  -- Hyppo 4.2
             "Ascension_Celestial_MUTA_MagicShell",                -- Stag 4.2
         },
         Artifacts = {
             "Artifact_Consecration",
         },
-        ExtendedStats = {
-            {
-                StatID = "FreeReactionCharge",
-                Property1 = "Celestial",
-                Amount = 1,
-            }
-        },
         Keyword = { Keyword = "Celestial", BoonType = "Activator" },
     },
     -- Way too cancerous on Base ai
-    {
-        Name = "Koolaidman",
-        ID = "CATHE_Archetype_CelestialBuffsWeak",
-        Description = "You can’t harm a combat medic",
-        Cost = 25,
-        Weight = 0,
-        Visible = true,
-        Priority = 100,
-        Prerequisites = {
-            ["CATHE_Archetype_Base"] = true,
-        },
-        AllowedAIArchetypes = {
-            ["base"] = true
-        },
-        SpecialLogic = {
-            "Ascension_Celestial_ACT_BHStacks",                   -- Guardsman 4.1
-            "Ascension_Celestial_MUTA_ViolentStrikeForAlly",      -- Hyppo 4.2
-        },
-        Keyword = { Keyword = "Celestial", BoonType = "Activator" },
-    },
+    -- {
+    --     Name = "Koolaidman",
+    --     ID = "CATHE_Archetype_CelestialBuffsWeak",
+    --     Description = "You can’t harm a combat medic",
+    --     Cost = 25,
+    --     Weight = 0,
+    --     Visible = true,
+    --     Priority = 100,
+    --     Prerequisites = {
+    --         ["CATHE_Archetype_Base"] = true,
+    --     },
+    --     AllowedAIArchetypes = {
+    --         ["base"] = true
+    --     },
+    --     SpecialLogic = {
+    --         "Ascension_Celestial_ACT_BHStacks",                   -- Guardsman 4.1
+    --         "Ascension_Celestial_MUTA_ViolentStrikeForAlly",      -- Hyppo 4.2
+    --     },
+    --     Keyword = { Keyword = "Celestial", BoonType = "Activator" },
+    -- },
 }
 
 for _,effect in ipairs(effects) do

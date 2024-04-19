@@ -6,13 +6,14 @@ local effects = {
     {
         Name = "Zodiac",
         ID = "CATHE_Archetype_Zodiac",
-        Description = "If she had only shut her mouth...",
+        Description = FormatDescription("If she had only shut her mouth...", "Celestial on enemy Vulnerable 3"),
         Cost = 35,
         Weight = 1,
         Visible = true,
         Priority = 100,
         Prerequisites = {
             ["CATHE_Archetype_Base"] = true,
+            ["CATHE_Stat_CelestialBonusReaction"] = true,
         },
         AllowedAIArchetypes = {
             ["healer"] = true,
@@ -25,13 +26,6 @@ local effects = {
             "Artifact_Zodiac",
             "Artifact_Misery",
             "Artifact_BlackglassBrand",
-        },
-        ExtendedStats = {
-            {
-                StatID = "FreeReactionCharge",
-                Property1 = "Celestial",
-                Amount = 1,
-            }
         },
     },
 }
