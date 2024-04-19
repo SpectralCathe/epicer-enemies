@@ -7,27 +7,19 @@ local effects = {
         Name = "Coach",
         ID = "CATHE_Archetype_VSOnCelestial",
         Description = "Go get 'em, tiger",
-        Cost = 25,
+        Cost = 15,
         Weight = 1,
         Visible = true,
         Priority = 100,
         Prerequisites = {
             ["CATHE_Archetype_Base"] = true,
+            ["CATHE_Archetype_Benevolence0Armor"] = true,
+            ["CATHE_Ascension_CelestialBHRemoval"] = true,
+            ["CATHE_Ascension_CelestialVS"] = true,
+            ["CATHE_Stat_CelestialBonusReaction"] = true,
         },
         RequiredSkills = {
             "Shout_RecoverArmour"
-        },
-        SpecialLogic = {
-            "Ascension_Benevolence_ACT_AllyArmorToZero",  -- Fortress 3.1
-            "Ascension_Celestial_ACT_BHStacks",           -- Guardsman 4.1
-            "Celestial_MUTA_ViolentStrikeForAlly",        -- Hippo 4.2
-        },
-        ExtendedStats = {
-            {
-                StatID = "FreeReactionCharge",
-                Property1 = "Celestial",
-                Amount = 1,
-            }
         },
         Keyword = { Keyword = "Celestial", BoonType = "Activator" },
     },
@@ -35,32 +27,26 @@ local effects = {
         Name = "Warden",
         ID = "CATHE_Archetype_CelestialSelfWardEncourage",
         Description = "Krieg?",
-        Cost = 25,
+        Cost = -5,
         Weight = 1,
         Visible = true,
         Priority = 100,
         Prerequisites = {
             ["CATHE_Archetype_Base"] = true,
             ["CATHE_Ascension_CelestialBHRemoval"] = true,
+            ["CATHE_Archetype_Benevolence0Armor"] = true,
+            ["CATHE_Archetype_BenevolenceNoBH"] = true,
+            ["CATHE_Stat_CelestialBonusReaction2"] = true,
         },
         RequiredSkills = {
             "Shout_RecoverArmour"
         },
         SpecialLogic = {
-            "Ascension_Benevolence_ACT_AllyArmorToZero",             -- Fortress 3.1
-            "Ascension_Benevolence_MUTA_GainNoStacks",               -- Goddess 5.1
             "Ascension_CenturionAndCelestial_MUTA_WardACTGenExtend", -- The Centurion 4.2
             "Ascension_Ward_MUTA_EncourageReaction",                 -- Champion 3.2
         },
         Artifacts = {
             "Artifact_Arcturus"
-        },
-        ExtendedStats = {
-            {
-                StatID = "FreeReactionCharge",
-                Property1 = "Celestial",
-                Amount = 2,
-            }
         },
         Keyword = { Keyword = "Ward", BoonType = "Activator" },
     },

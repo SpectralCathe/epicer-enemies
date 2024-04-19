@@ -7,26 +7,21 @@ local effects = {
         Name = "First AIDS",
         ID = "CATHE_Archetype_BeneHealer",
         Description = "When it's needed the most",
-        Cost = 25,
+        Cost = -8,
         Weight = 1,
         Visible = true,
         Priority = 100,
         Prerequisites = {
             ["CATHE_Archetype_Base"] = true,
+            ["CATHE_Archetype_Benevolence0Armor"] = true,
+            ["CATHE_Archetype_BenevolenceNoBH"] = true,
+            ["CATHE_Archetype_BenevolenceHealRes"] = true,
+            ["CATHE_Archetype_BenevolenceEmulateCelestial"] = true,
         },
         AllowedAIArchetypes = {
             ["healer"] = true,
         },
-        Artifacts = {
-            "Artifact_Charity"
-        },
-        SpecialLogic = {
-            "Ascension_Benevolence_ACT_AllyArmorToZero",        -- Fortress 3.1
-            "Ascension_Benevolence_MUTA_GainNoStacks",          -- Goddess 5.1
-            "Ascension_Benevolence_MUTA_HealAndEleRes",         -- Pegasus 4.1
-            "Ascension_Benevolence_MUTA_EmulateCelestialHeal",  -- Goddess 4.1
-        },
-        Keyword = { Keyword = "Celestial", BoonType = "Activator" },
+        Keyword = { Keyword = "Benevolence", BoonType = "Activator" },
     },
     {
         Name = "Combat medic",

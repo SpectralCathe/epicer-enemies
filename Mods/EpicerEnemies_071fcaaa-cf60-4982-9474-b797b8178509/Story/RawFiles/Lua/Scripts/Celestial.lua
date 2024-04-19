@@ -20,6 +20,23 @@ local effects = {
         },
         Keyword = { Keyword = "Celestial", BoonType = "Mutator" },
     },
+    {
+        Name = "Celestial 2 bonus reactions",
+        ID = "CATHE_Stat_CelestialBonusReaction2",
+        Description = "+2 free Celestial reactions per round.",
+        Cost = 5,
+        Weight = 0.1,
+        Visible = true,
+        Priority = 20,
+        ExtendedStats = {
+            {
+                StatID = "FreeReactionCharge",
+                Property1 = "Celestial",
+                Amount = 2,
+            }
+        },
+        Keyword = { Keyword = "Celestial", BoonType = "Mutator" },
+    },
 
     -- ACTIVATORS
     {

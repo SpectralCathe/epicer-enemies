@@ -95,6 +95,17 @@ local effects = {
     -- The Vault - no
     -- Apothecary's Guile - doesn't work
     -- The Butcher's Will - no
+    {
+        Name = "Charity",
+        ID = "CATHE_Artifact_Charity",
+        Description = "When you affect a character with Benevolence, restore 10% of its total Vitality, Physical Armor, and Magic Armor.",
+        Cost = 15,
+        Weight = 1.5,
+        Visible = true,
+        Priority = 20,
+        Artifacts = { "Artifact_Charity" },
+        Keyword = { Keyword = "Benevolence", BoonType = "Mutator" },
+    },
     -- Charity - per build
     -- Dominion - no
     -- Ether Tide - no
