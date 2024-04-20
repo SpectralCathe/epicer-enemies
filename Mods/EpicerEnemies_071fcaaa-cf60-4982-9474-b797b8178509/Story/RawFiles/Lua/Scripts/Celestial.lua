@@ -45,7 +45,7 @@ local effects = {
         Description = "Celestial reactions can be performed on allies you can see when a friendly effect removes Battered or Harried from them.",
         Cost = 10,
         Weight = 0,
-        Visible = true,
+        Visible = false,
         Priority = 20,
         SpecialLogic = {
             "Ascension_Celestial_ACT_BHStacks",  -- Guardsman 4.1
@@ -60,7 +60,7 @@ local effects = {
         Description = "Celestial reactions activate Violent Strike for allies,",
         Cost = 10,
         Weight = 0,
-        Visible = true,
+        Visible = false,
         Priority = 20,
         SpecialLogic = {
             "Celestial_MUTA_ViolentStrikeForAlly",  -- Hippo 4.2
