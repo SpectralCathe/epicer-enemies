@@ -19,7 +19,7 @@ local effects = {
     {
         Name = "Hurt more",
         ID = "CATHE_Archetype_VSArcher",
-        Description = "What if I stab you a bit deeper?",
+        Description = FormatDescription("What if I stab you a bit deeper?", "VS on dealing damage that exceeds 10% target’s Vitality."),
         Cost = 0,
         Weight = 1,
         Visible = true,
@@ -41,7 +41,7 @@ local effects = {
     {
         Name = "Out with a bang",
         ID = "CATHE_Archetype_HatchetVS",
-        Description = "Totally calculated my AP",
+        Description = FormatDescription("Totally calculated my AP", "VS on reaching 0 AP."),
         Cost = 10,
         Weight = 1,
         Visible = true,
@@ -63,7 +63,7 @@ local effects = {
     {
         Name = "And rip...",
         ID = "CATHE_Archetype_VSConqueror",
-        Description = "...and cut and mutilate the innocent",
+        Description = FormatDescription("...and cut and mutilate the innocent", "VS on using skills that cost 1 or more AP."),
         Cost = 30,
         Weight = 1,
         Visible = true,
