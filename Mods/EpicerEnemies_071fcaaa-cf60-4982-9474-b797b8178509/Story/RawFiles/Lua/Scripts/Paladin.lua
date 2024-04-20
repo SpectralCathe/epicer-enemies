@@ -26,7 +26,7 @@ local effects = {
     {
         Name = "Warden",
         ID = "CATHE_Archetype_CelestialSelfWardEncourage",
-        Description = "Krieg?",
+        Description = FormatDescription("Krieg?", "Benevolence on ally 0 armour, incurs no BH, Celestial on BH removal, Ward on 3rd Celestial or Centurion, emulates Encourage with BH removal."),
         Cost = -5,
         Weight = 1,
         Visible = true,
