@@ -157,7 +157,7 @@ local effects = {
     },
     {
         Name = "Occultist medusa",
-        ID = "CATHE_Archetype_OccultistMedusa",
+        ID = "CATHE_Archetype_OccultistEmulateMedusa",
         Description = "1/round when you perform an Occultist reaction, emulate the effects of Petrifying Visage.",
         Cost = 10,
         Weight = 0,
@@ -205,7 +205,7 @@ local effects = {
             ["CATHE_Stat_OccultistBonusReaction"] = true,
             ["CATHE_Archetype_OccultistSubjugatedTerrified_Base"] = true,
             ["CATHE_Archetype_OccultistAtaxiaSquelched_Base"] = true,
-            ["CATHE_Archetype_OccultistMedusa"] = true,
+            ["CATHE_Archetype_OccultistEmulateMedusa"] = true,
         },
         AllowedAIArchetypes = {
             ["base"] = true,
