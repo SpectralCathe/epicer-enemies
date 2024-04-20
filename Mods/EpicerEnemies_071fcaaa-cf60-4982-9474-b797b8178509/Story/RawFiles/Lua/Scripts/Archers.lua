@@ -67,8 +67,8 @@ local effects = {
     {
         Name = "Spider Queen",
         ID = "CATHE_Archetype_PredatorOccultistSkitters",
-        Description = FormatDescription("Watch them dance!", "Predator next to a corpse, spawns a Skitterer, Basic attack Occultist on summon death"),
-        Cost = -10,
+        Description = FormatDescription("Watch them dance!", "Predator next to a corpse, spawns a Skitterer, Basic attack Occultist on ally summon death"),
+        Cost = -13,
         Weight = 0.3,
         Visible = true,
         Priority = 100,
@@ -77,25 +77,17 @@ local effects = {
             ["CATHE_Stat_PredatorBonusReaction"] = true,
             ["CATHE_Ascension_PredatorCorpse_Base"] = true,
             ["CATHE_Ascension_PredatorSkitterer_Base"] = true,
+            ["CATHE_Archetype_OccultistSummonDeath"] = true,
+            ["CATHE_Archetype_OccultistBasicAttack"] = true,
+            ["CATHE_Stat_OccultistBonusReaction"] = true,
         },
         AllowedAIArchetypes = {
             ["ranger"] = true,
             ["ranged"] = true,
         },
-        SpecialLogic = {
-            "Ascension_Occultist_ACT_AlliedSummonKilled",  -- Supplicant 3.2
-            "Ascension_Occultist_MUTA_NowBasicAttack",     -- Imp 5.1
-        },
         Artifacts = {
             "Artifact_Zenith",
             "Artifact_Expedition",
-        },
-        ExtendedStats = {
-            {
-                StatID = "FreeReactionCharge",
-                Property1 = "Occultist",
-                Amount = 1,
-            },
         },
         Keyword = { Keyword = "Predator", BoonType = "Activator" },
     },
