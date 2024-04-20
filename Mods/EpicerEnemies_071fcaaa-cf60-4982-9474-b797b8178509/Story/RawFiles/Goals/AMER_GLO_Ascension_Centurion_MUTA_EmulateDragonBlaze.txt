@@ -1,0 +1,40 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//Centurion reactions spend 5 stacks of Adaptation to emulate Dragon's Blaze.
+
+PROC PROC_AMER_KeywordStat_Centurion_Fire((CHARACTERGUID)_Char, (CHARACTERGUID)_Target)
+AND
+DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_Centurion_MUTA_EmulateDragonBlaze", _)
+AND
+DB_AMER_KeywordStat_Adaptation_CurrentStack(_Char, _StackCount)
+AND
+_StackCount >= 3
+THEN
+PROC_AMER_KeywordStat_Adaptation_AddStack(_Char, _Char, -1);
+PlayEffect(_Char, "RS3_FX_Skills_Fire_Flamebreath_Fire_01", "Dummy_OverheadFX");
+PlayEffect(_Char, "RS3_FX_Skills_Fire_Flamebreath_CastHands_01", "Dummy_L_HandFX");
+PlayEffect(_Char, "RS3_FX_Skills_Fire_Flamebreath_CastHands_01", "Dummy_R_HandFX");
+PROC_AMER_GEN_ShootConeAt(_Char, _Target, "Cone_Flamebreath", "RS3_FX_Skills_Fire_Flamebreath_Fire_01");
+PROC_AMER_GEN_CharacterCombatLogText(_Char, "AMER_Ascension_Centurion_MUTA_EmulateDragonBlaze");
+
+
+// Adjust range to 7m
+PROC PROC_AMER_Reaction_Conditions_Additional_WithinWeaponRange_GetRange_Manip((CHARACTERGUID)_Char, (CHARACTERGUID)_Target, "AMER_Predator", (STRING)_RequestID)
+AND
+DB_AMER_Ascension_SpecialLogic(_Char, "Ascension_Centurion_MUTA_EmulateDragonBlaze", _)
+AND
+DB_AMER_GEN_OUTPUT_Real(_OldRange)
+AND
+_OldRange < 7.0
+THEN
+NOT DB_AMER_GEN_OUTPUT_Real(_OldRange);
+DB_AMER_GEN_OUTPUT_Real(7.0);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_UI_Ascension_NodeRewards"
