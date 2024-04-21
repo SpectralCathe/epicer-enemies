@@ -44,6 +44,9 @@ local effects = {
         Weight = 0.3,
         Visible = true,
         Priority = 20,
+        AllowedAIArchetypes = {
+            ["mage"] = true,
+        },
         Prerequisites = {
             ["CATHE_Archetype_OccultistEndTurn_Base"] = true,
         },
@@ -120,7 +123,7 @@ local effects = {
         Name = "Occultist creates totem",
         ID = "CATHE_Archetype_OccultistTotem",
         Description = "Occultist reactions summon a totem adjacent to the target.",
-        Cost = 8,
+        Cost = 16,  -- more powerful than it should be probs
         Weight = 0,
         Visible = false,
         Priority = 20,
@@ -187,7 +190,7 @@ local effects = {
             ["CATHE_Archetype_OccultistTotemAttack"] = true,
         },
         AllowedAIArchetypes = {
-            ["base"] = true,
+            -- ["base"] = true,  -- makes some fights (looking at you, Terracotta) almost impossible
             ["mage"] = true,
         },
         Keyword = { Keyword = "Occultist", BoonType = "Activator" },
