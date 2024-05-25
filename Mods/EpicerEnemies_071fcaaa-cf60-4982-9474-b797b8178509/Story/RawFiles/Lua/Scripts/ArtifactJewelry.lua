@@ -21,16 +21,18 @@ local effects = {
     -- Drog's Luck - no
     -- Exaltation - no
     -- Eye of the Storm - no
-    {
-        Name = "Fecundity",
-        ID = "CATHE_Artifact_Fecundity",
-        Description = "... Let the Earth bring forth ....",
-        Cost = 7,
-        Weight = 0.2,
-        Visible = true,
-        Priority = 20,
-        Artifacts = { "Artifact_Fecundity" },
-    },
+
+    -- Cancer early game, irrelevant late game
+    -- {
+    --     Name = "Fecundity",
+    --     ID = "CATHE_Artifact_Fecundity",
+    --     Description = "... Let the Earth bring forth ....",
+    --     Cost = 7,
+    --     Weight = 0.2,
+    --     Visible = true,
+    --     Priority = 20,
+    --     Artifacts = { "Artifact_Fecundity" },
+    -- },
     {
         Name = "Ghostflame",
         ID = "CATHE_Artifact_Ghostflame",
