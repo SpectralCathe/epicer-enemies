@@ -28,6 +28,13 @@ local effects = {
         Weight = 0,        -- 0 weight so never appears naturally
         Visible = false,
         Priority = 100,    -- Priority here does not matter but make sure all high-level archetypes use the same
+        FlexStats = {
+            {
+                Type = "Attribute",
+                Stat = "CONSTITUTION",
+                Amount = 20
+            },
+        },
     },
 
     -- {
