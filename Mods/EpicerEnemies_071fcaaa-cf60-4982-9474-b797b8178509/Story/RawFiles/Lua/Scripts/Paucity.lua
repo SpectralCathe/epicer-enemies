@@ -50,7 +50,7 @@ local effects = {
         Name = "Oppression-suppression",
         ID = "CATHE_Effect_PaucityOnBHWither",
         Description = FormatDescription("I suck power from thee!", "Paucity on 7 BH, Paucity makes basic attacks apply Wither."),
-        Cost = 16,
+        Cost = 0,
         Weight = 1,
         Visible = true,
         Priority = 20,
@@ -59,7 +59,7 @@ local effects = {
             ["CATHE_Ascension_PaucityWither_Base"] = true,
             ["CATHE_Ascension_PaucityWither"] = true,
         },
-        Keyword = { Keyword = "Predator", BoonType = "Mutator" },
+        Keyword = { Keyword = "Paucity", BoonType = "Activator" },
     },
 }
 
