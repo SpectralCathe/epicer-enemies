@@ -1,0 +1,1362 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+//=============================================//
+//               K E Y W O R D S               //
+//                                             //
+//   Written by Matteo "Ameranth" T. (2018)    //
+//=============================================//
+//Scripting for "Keyword" stats. Keyword stats are either obtained or
+//not--they have no "amount" like other stats (sort of like a talent). 
+//However, they can be modified via StatusModding (See AMER_GLO_Stats_StatusModding)
+//and other scripted additions. Most Keywords offer a number of places
+//to hook into their execution--to manipulate the end result.
+//
+//I tend to provide these through the Ascension UI, but you could script them
+//to be granted anywhere.
+
+
+
+DB_AMER_KeywordStat_Elementalist_Elements(0, "Earth", "AMER_ELEMENTALIST_EARTH_");
+DB_AMER_KeywordStat_Elementalist_Elements(1, "Fire", "AMER_ELEMENTALIST_FIRE_");
+DB_AMER_KeywordStat_Elementalist_Elements(2, "Air", "AMER_ELEMENTALIST_AIR_");
+DB_AMER_KeywordStat_Elementalist_Elements(3, "Water", "AMER_ELEMENTALIST_WATER_");
+
+
+DB_AMER_KeywordStat_Abeyance_DefaultMult(1.15);
+
+KBSECTION
+//=============================================//
+//               K E Y W O R D S               //
+//                                             //
+//   Written by Matteo "Ameranth" T. (2018)    //
+//=============================================//
+
+//REGION De/Activate a Keyword.
+//Adding a Keyword stat increments a counter for it, so that it
+//is only ever removed when the character has lost all sources
+//of it.
+PROC PROC_AMER_KeywordStat_Add((CHARACTERGUID)_Char, (STRING)_Keyword, (INTEGER)_Add)
+AND
+DB_AMER_KeywordStat_Added(_Char, _Keyword, _Count)
+AND
+IntegerSum(_Count, _Add, _NewCount)
+AND
+IntegerMax(_NewCount, 0, _NewCountBounded)
+THEN
+NOT DB_AMER_KeywordStat_Added(_Char, _Keyword, _Count);
+PROC_AMER_KeywordStat_CheckRemoved(_Char, _Keyword, _NewCountBounded);
+
+//If _Count is > 0, the Keyword still exists, so add the updated entry.
+PROC PROC_AMER_KeywordStat_CheckRemoved((CHARACTERGUID)_Char, (STRING)_Keyword, (INTEGER)_NewCountBounded)
+AND
+_NewCountBounded > 0
+THEN
+DB_AMER_KeywordStat_Added(_Char, _Keyword, _NewCountBounded);
+
+//If _NewCountBounded was zero, we know the keyword is removed. Exec a proc for keyword removal procedures.
+PROC PROC_AMER_KeywordStat_CheckRemoved((CHARACTERGUID)_Char, (STRING)_Keyword, 0)
+THEN
+PROC_AMER_KeywordStat_Lost(_Char, _Keyword);
+PROC_AMER_KeywordStat_CheckAllLogicRemoved(_Char, _Keyword);
+
+
+PROC PROC_AMER_KeywordStat_Add((CHARACTERGUID)_Char, (STRING)_Keyword, (INTEGER)_Add)
+AND
+NOT DB_AMER_KeywordStat_Added(_Char, _Keyword, _)
+AND
+_Add > 0
+THEN
+PROC_AMER_KeywordStat_CheckFirstLogicAdded(_Char, _Keyword);
+DB_AMER_KeywordStat_Added(_Char, _Keyword, _Add);
+PROC_AMER_KeywordStat_Added(_Char, _Keyword);
+
+
+
+//Can be assigned to characters if they require a keyword's logic to be active, though they do not have the keyword.
+PROC PROC_AMER_KeywordStat_LogicFlag_Add((CHARACTERGUID)_Char, (STRING)_Keyword, (INTEGER)_Add)
+AND
+DB_AMER_KeywordStat_LogicFlag(_Char, _Keyword, _OldAmount)
+AND
+IntegerSum(_OldAmount, _Add, _NewAmount)
+THEN
+NOT DB_AMER_KeywordStat_LogicFlag(_Char, _Keyword, _OldAmount);
+DB_AMER_KeywordStat_LogicFlag(_Char, _Keyword, _NewAmount);
+
+PROC PROC_AMER_KeywordStat_LogicFlag_Add((CHARACTERGUID)_Char, (STRING)_Keyword, (INTEGER)_Add)
+AND
+NOT DB_AMER_KeywordStat_LogicFlag(_Char, _Keyword, _)
+AND
+_Add > 0
+THEN
+PROC_AMER_KeywordStat_CheckFirstLogicAdded(_Char, _Keyword);
+DB_AMER_KeywordStat_LogicFlag(_Char, _Keyword, _Add);
+
+//Remove zero-sum entries.
+PROC PROC_AMER_KeywordStat_LogicFlag_Add((CHARACTERGUID)_Char, (STRING)_Keyword, (INTEGER)_Add)
+AND
+DB_AMER_KeywordStat_LogicFlag(_Char, _Keyword, 0)
+THEN
+NOT DB_AMER_KeywordStat_LogicFlag(_Char, _Keyword, 0);
+PROC_AMER_KeywordStat_CheckAllLogicRemoved(_Char, _Keyword);
+
+
+//Hook into this proc to act upon a Keyword being added for the first time.
+//PROC PROC_AMER_KeywordStat_Added((CHARACTERGUID)_Char, (STRING)_Keyword)
+//AND
+//StringConcatenate("AMER_GEN_Stats_Keywords_", _Keyword, _Goal)
+//THEN
+//PROC_AMER_GEN_Goal_Activate(_Goal);
+
+
+PROC PROC_AMER_KeywordStat_CheckFirstLogicAdded((CHARACTERGUID)_Char, (STRING)_Keyword)
+AND
+NOT DB_AMER_KeywordStat_Added(_Char, _Keyword, _)
+AND
+NOT DB_AMER_KeywordStat_LogicFlag(_Char, _Keyword, _)
+THEN
+PROC_AMER_KeywordStat_FirstLogicAdded(_Char, _Keyword);
+
+//Hook into this proc to act upon a Keyword's logic being added to this character for the first time.
+PROC PROC_AMER_KeywordStat_FirstLogicAdded((CHARACTERGUID)_Char, (STRING)_Keyword)
+AND
+StringConcatenate("AMER_GEN_Stats_Keywords_", _Keyword, _Goal)
+THEN
+PROC_AMER_GEN_Goal_Activate(_Goal);
+
+
+PROC PROC_AMER_KeywordStat_CheckAllLogicRemoved((CHARACTERGUID)_Char, (STRING)_Keyword)
+AND
+NOT DB_AMER_KeywordStat_Added(_Char, _Keyword, _)
+AND
+NOT DB_AMER_KeywordStat_LogicFlag(_Char, _Keyword, _)
+THEN
+PROC_AMER_KeywordStat_AllLogicRemoved(_Char, _Keyword);
+
+//Hook into this proc to act upon a Keyword being lost from this character entirely.
+PROC PROC_AMER_KeywordStat_AllLogicRemoved((CHARACTERGUID)_Char, (STRING)_Keyword)
+THEN
+PROC_AMER_KeywordStat_CheckDeactivateLogic(_Keyword);
+
+PROC PROC_AMER_KeywordStat_CheckDeactivateLogic((STRING)_Keyword)
+AND
+NOT DB_AMER_KeywordStat_Added(_, _Keyword, _)
+AND
+NOT DB_AMER_KeywordStat_LogicFlag(_, _Keyword, _)   //If no characters *at all* have this logic, then complete the keyword's goal.
+AND
+NOT QRY_AMER_KeywordStat_LingeringGoal(_Keyword)
+AND
+StringConcatenate("AMER_GEN_Stats_Keywords_", _Keyword, _Goal)
+THEN
+PROC_AMER_GEN_Goal_TimedCompletion(_Keyword, 2500);
+
+
+//Hook into this to impose a condition where the keyword's internal goal is *not* completed even when there are no more instances of the keywordstat.
+QRY QRY_AMER_KeywordStat_LingeringGoal((STRING)_Keyword)
+AND
+0 != 0  //Prototype is never true.
+THEN
+DB_NOOP(1);
+
+//END_REGION
+
+
+//REGION Add/remove a Keyword modifier
+//Keyword modifiers are facts that individual Keyword procedures are
+//scripted to consider during the execution of their effects. As such,
+//there is no generic scripting for Keyword modifiers other than to
+//add or remove their values. The actual functionality of a Keyword
+//modifier must be scripted per-fact.
+
+PROC PROC_AMER_KeywordStat_KeywordMod_Add((CHARACTERGUID)_Char, (STRING)_KeywordModString, (INTEGER)_Add)
+AND
+DB_AMER_KeywordStat_KeywordMod(_Char, _KeywordModString, _OldValue)
+AND
+IntegerSum(_OldValue, _Add, _NewValue)
+AND
+IntegerMax(_NewValue, 0, _NewValueBounded)
+THEN
+NOT DB_AMER_KeywordStat_KeywordMod(_Char, _KeywordModString, _OldValue);
+DB_AMER_KeywordStat_KeywordMod(_Char, _KeywordModString, _NewValueBounded);
+
+PROC PROC_AMER_KeywordStat_KeywordMod_Add((CHARACTERGUID)_Char, (STRING)_KeywordModString, (INTEGER)_Add)
+AND
+NOT DB_AMER_KeywordStat_KeywordMod(_Char, _KeywordModString, _)
+AND
+_Add > 0
+THEN
+DB_AMER_KeywordStat_KeywordMod(_Char, _KeywordModString, _Add);
+PROC_AMER_KeywordStat_KeywordMod_Init(_Char, _KeywordModString, _Add);
+
+PROC PROC_AMER_KeywordStat_KeywordMod_Add((CHARACTERGUID)_Char, (STRING)_KeywordModString, (INTEGER)_Add)
+AND
+DB_AMER_KeywordStat_KeywordMod(_Char, _KeywordModString, 0)
+THEN
+NOT DB_AMER_KeywordStat_KeywordMod(_Char, _KeywordModString, 0);
+PROC_AMER_KeywordStat_KeywordMod_Removed(_Char, _KeywordModString);
+
+
+
+//Can hook into this to act upon a keywordmod being added from previously having none of it.
+PROC PROC_AMER_KeywordStat_KeywordMod_Init((CHARACTERGUID)_Char, (STRING)_KeywordModString, (INTEGER)_Amount)
+THEN
+DB_NOOP(1);
+
+//Can hook into this to act upon a keywordmod being removed.
+PROC PROC_AMER_KeywordStat_KeywordMod_Removed((CHARACTERGUID)_Char, (STRING)_KeywordModString)
+THEN
+DB_NOOP(1);
+
+//END_REGION
+
+
+
+//REGION Abeyance.
+//Abeyance heals all damage taken when suffering more than a given percentage of maximum vitality at once.
+//This damage is then buffered, and suffered again at the beginning of the character's next turn. This
+//buffered damage is subjected to a multiplier, and is then dealt as unresistable damage, split evenly
+//among vitality and armor--if insufficent armor exists to take this damage, the remainder is dealt instead
+//to vitality.
+
+//Checking to activate the internal logic whenever requesting an activation, as some activations may be possible without any
+//character having the keyword.
+PROC PROC_AMER_KeywordStat_Abeyance_Activate((CHARACTERGUID)_Char, (CHARACTERGUID)_Source, (REAL)_DamageTotal, (REAL)_DamageVit, (REAL)_DamagePhys, (REAL)_DamageMagic)
+THEN
+PROC_AMER_GEN_Goal_Activate("AMER_GEN_Stats_Keywords_Abeyance");
+
+//END_REGION
+
+
+//REGION Adaptation.
+
+//Base effects of Adaptation granting Adapt.
+PROC PROC_AMER_KeywordStat_Added((CHARACTERGUID)_Char, "Adaptation")
+THEN
+PROC_AMER_FlexStat_CharacterAddStat_Spell(_Char, "Shout_AMER_Adaptation", 1.0);
+
+PROC PROC_AMER_KeywordStat_Lost((CHARACTERGUID)_Char, "Adaptation")
+THEN
+PROC_AMER_FlexStat_CharacterAddStat_Spell(_Char, "Shout_AMER_Adaptation", -1.0);
+
+PROC PROC_AMER_KeywordStat_Adaptation_Activate((CHARACTERGUID)_Source)
+THEN
+PROC_AMER_KeywordStat_Adaptation_Activate(_Source, _Source, 1);
+
+//Checking to activate the internal logic whenever requesting an activation, as some activations may be possible without any
+//character having the keyword.
+PROC PROC_AMER_KeywordStat_Adaptation_Activate((CHARACTERGUID)_Char, (CHARACTERGUID)_Source)
+THEN
+PROC_AMER_KeywordStat_Adaptation_Activate(_Char, _Source, 1);
+
+PROC PROC_AMER_KeywordStat_Adaptation_Activate((CHARACTERGUID)_Char, (CHARACTERGUID)_Source, (INTEGER)_Stacks)
+THEN
+PROC_AMER_GEN_Goal_Activate("AMER_GEN_Stats_Keywords_Adaptation");
+
+//END_REGION
+
+
+//REGION Benevolence.
+
+//Base effects of Benevolence granting Mercy.
+PROC PROC_AMER_KeywordStat_Added((CHARACTERGUID)_Char, "Benevolence")
+THEN
+PROC_AMER_FlexStat_CharacterAddStat_Spell(_Char, "Shout_AMER_Benevolence_Mercy", 1.0);
+
+PROC PROC_AMER_KeywordStat_Lost((CHARACTERGUID)_Char, "Benevolence")
+THEN
+PROC_AMER_FlexStat_CharacterAddStat_Spell(_Char, "Shout_AMER_Benevolence_Mercy", -1.0);
+
+
+//Checking to activate the internal logic whenever requesting an activation, as some activations may be possible without any
+//character having the keyword.
+PROC PROC_AMER_KeywordStat_Benevolence_Activate((CHARACTERGUID)_SourceChar, (CHARACTERGUID)_Char, (INTEGER)_StacksMovedAdjust)
+THEN
+PROC_AMER_GEN_Goal_Activate("AMER_GEN_Stats_Keywords_Benevolence");
+
+//END_REGION
+
+
+//REGION Celestial.
+
+PROC PROC_AMER_Reaction_Fire((CHARACTERGUID)_Char, (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, "AMER_Celestial", (STRING)_RequestID, (INTEGER)_RitualBool)
+THEN
+PROC_AMER_KeywordStat_Celestial_Fire(_Char, _Target, _RequestID);
+
+PROC PROC_AMER_KeywordStat_Celestial_Fire((CHARACTERGUID)_Char, (CHARACTERGUID)_Target, (STRING)_RequestID)
+AND
+NOT QRY_AMER_KeywordStat_Celestial_OneshotOverride(_Char, _Target, _RequestID)
+THEN
+PROC_AMER_KeywordStat_Celestial_Fire_Healing(_Char, _Target);
+
+PROC PROC_AMER_KeywordStat_Celestial_Fire_Healing((CHARACTERGUID)_Char, (CHARACTERGUID)_Target)
+AND
+QRY_AMER_KeywordStat_Celestial_GetHeal(_Char)
+AND
+DB_AMER_GEN_OUTPUT_Real(_Heal)
+THEN
+PROC_AMER_GEN_Heal_Percentage(_Target, _Heal,  "Vitality", _Char, 0, 1, 1);	//Not a triage heal. Counts as Necromantic. Ability scaling enabled (if any).
+//PROC_AMER_GEN_ScaledHeal_Percentage(_Target, 15.0, "Vitality", 2.0, "Embodiment", "Life", _Char, 0, 1, 1);
+
+
+
+QRY QRY_AMER_KeywordStat_Celestial_GetHeal((CHARACTERGUID)_Char)
+AND
+DB_AMER_GEN_OUTPUT_Real(_OldOutput)
+THEN
+NOT DB_AMER_GEN_OUTPUT_Real(_OldOutput);
+
+QRY QRY_AMER_KeywordStat_Celestial_GetHeal((CHARACTERGUID)_Char)
+AND
+QRY_AMER_UI_Ascension_GetEmbodimentCount(_Char, "Life")
+AND
+DB_AMER_GEN_OUTPUT_Integer(_Life)
+AND
+Real(_Life, _LifeReal)
+AND
+RealProduct(_LifeReal, 2.0, _LifeHealing)
+AND
+RealSum(15.0, _LifeHealing, _TotalHealing)
+THEN
+DB_AMER_GEN_OUTPUT_Real(_TotalHealing);
+
+QRY QRY_AMER_KeywordStat_Celestial_GetHeal((CHARACTERGUID)_Char)
+THEN
+PROC_AMER_KeywordStat_Celestial_GetHeal_Manip(_Char);
+
+
+//Hook into this to manipulate DB_AMER_GEN_OUTPUT_Real(), the amount of healing that this celestial reaction will do.
+PROC PROC_AMER_KeywordStat_Celestial_GetHeal_Manip((CHARACTERGUID)_Char)
+THEN
+DB_NOOP(1);
+
+
+
+
+QRY QRY_AMER_Reaction_Conditions_Additional((CHARACTERGUID)_Char, "AMER_Celestial", (STRING)_RequestID, (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z)
+AND
+CharacterIsAlly(_Target, _Char, 1)
+AND
+NOT QRY_AMER_GEN_NotDamagedByHeal(_Target, 1)	//Fails if target is an ally damaged by healing, ignoring Undead talent.
+THEN
+DB_AMER_Reaction_Conditions_Additional_Failed(_Char, "AMER_Celestial");
+
+
+/*
+QRY QRY_AMER_Reaction_Conditions_Additional((CHARACTERGUID)_Char, "AMER_Celestial", (STRING)_RequestID, (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z)
+AND
+NOT QRY_AMER_KeywordStat_Celestial_ValidateVitality(_Char, _Target)
+THEN
+DB_AMER_Reaction_Conditions_Additional_Failed(_Char, "AMER_Celestial");
+
+//If the target is an ally, only heal if Vitality was not 100%.
+//If the target was an enemy, heal regardless, because it is probably
+//being activated as a result of the target being damaged by healing.
+QRY QRY_AMER_KeywordStat_Celestial_ValidateVitality((CHARACTERGUID)_Char, (CHARACTERGUID)_Target)
+AND
+CharacterIsEnemy(_Char, _Target, 0)
+AND
+NOT CharacterGetHitpointsPercentage(_Target, 100.0)
+THEN
+DB_NOOP(1);
+
+QRY QRY_AMER_KeywordStat_Celestial_ValidateVitality((CHARACTERGUID)_Char, (CHARACTERGUID)_Target)
+AND
+CharacterIsEnemy(_Char, _Target, 1)
+THEN
+DB_NOOP(1);
+*/
+
+
+//END_REGION
+
+
+//REGION Centurion.
+
+PROC PROC_AMER_Reaction_Fire((CHARACTERGUID)_Char, (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, "AMER_Centurion", (STRING)_RequestID, (INTEGER)_RitualBool)
+THEN
+PROC_AMER_Reaction_Restealth_Buffer(_Char, "AMER_Centurion");
+PROC_AMER_KeywordStat_Centurion_PreFire(_Char, _Target);
+PROC_AMER_KeywordStat_Centurion_Fire(_Char, _Target);
+
+
+//PROC PROC_AMER_KeywordStat_Centurion_PreFire((CHARACTERGUID)_Char, (CHARACTERGUID)_Target)
+//THEN
+//DB_NOOP(1);
+
+PROC PROC_AMER_KeywordStat_Centurion_Fire((CHARACTERGUID)_Char, (CHARACTERGUID)_Target)
+AND
+NOT QRY_AMER_KeywordStat_Centurion_OneshotOverride(_Char, _Target)
+AND
+NOT DB_AMER_ExtendedStat_AddedStat(_Char, "Reaction_BlockBasic", "AMER_Centurion", _, _, _)
+THEN
+PROC_AMER_GEN_AttackWithoutMove(_Char, _Target);
+//CharacterAttack(_Char, _Target); //This makes _Char walk into range.
+
+
+//Centurion reactions have +30% critical chance when wielding a non-ranged weapon.
+PROC PROC_AMER_KeywordStat_Centurion_PreFire((CHARACTERGUID)_Char, (CHARACTERGUID)_Target)
+AND
+NOT QRY_AMER_GEN_PlayerHasRangedWeapon(_Char)
+THEN
+PROC_AMER_TempStat_FlexStat_Add(_Char, "Stat", "CRITICALCHANCE", 30.0, 2000, "Attack");
+
+
+
+//Attempt to sneak after performing a Centurion reaction, if wielding a dagger.
+PROC PROC_AMER_Reaction_Completed(_Char, "AMER_Centurion", (STRING)_RequestID)
+AND
+DB_IsPlayer(_Char)      //Sneaking doesn't work for NPCs.
+AND
+QRY_AMER_GEN_PlayerHasWeaponTypeEquipped(_Char, "Knife")
+THEN
+PROC_AMER_GEN_DoFreeSneak_Delayed(_Char, 1300);
+PROC_AMER_GEN_CharacterCombatLogText(_Char, "AMER_Reactions_CenturionDaggerSneak");
+
+/*
+//Centurion imposes a 5.0m reaction range when used with a ranged weapon.
+QRY QRY_AMER_Reaction_Conditions_Additional((CHARACTERGUID)_Char, "AMER_Centurion", (STRING)_RequestID, (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z)
+AND
+DB_AMER_GEN_PlayerWeaponData(_Char, _, _MaxRange, _, _)
+AND
+RealMax(_MaxRange, 2.5, _MaxRangeBounded)	//Minimum of 2.5m range.
+AND
+QRY_AMER_KeywordStat_Centurion_GetRange(_Char, _MaxRangeBounded)
+AND
+DB_AMER_GEN_OUTPUT_Real(_MaxRangeFinal)
+AND
+GetDistanceTo(_Char, _Target, _Distance)
+AND
+QRY_AMER_GEN_GetAIBounds(_Char)
+AND
+DB_AMER_GEN_OUTPUT_Real(_CharBounds)
+AND
+QRY_AMER_GEN_GetAIBounds(_Target)
+AND
+DB_AMER_GEN_OUTPUT_Real(_TargetBounds)
+AND
+RealSubtract(_Distance, _CharBounds, _DistanceB)
+AND
+RealSubtract(_DistanceB, _TargetBounds, _DistanceBoundsAdjusted)    //We want to consider distance with the actors' bounds subtracted for weapon range.
+AND
+_DistanceBoundsAdjusted > _MaxRangeFinal	//Set the failure DB if distance was greater than our range.
+THEN
+DB_AMER_Reaction_Conditions_Additional_Failed(_Char, "AMER_Centurion");
+
+
+QRY QRY_AMER_KeywordStat_Centurion_GetRange((CHARACTERGUID)_Char, (REAL)_MaxRange)
+AND
+DB_AMER_GEN_OUTPUT_Real(_OldOutput)
+THEN
+NOT DB_AMER_GEN_OUTPUT_Real(_OldOutput);
+
+QRY QRY_AMER_KeywordStat_Centurion_GetRange((CHARACTERGUID)_Char, (REAL)_MaxRange)
+AND
+NOT DB_AMER_GEN_OUTPUT_Real(_)
+AND
+QRY_AMER_GEN_PlayerHasRangedWeapon(_Char)
+THEN
+DB_AMER_GEN_OUTPUT_Real(5.0);
+
+QRY QRY_AMER_KeywordStat_Centurion_GetRange((CHARACTERGUID)_Char, (REAL)_MaxRange)
+AND
+NOT DB_AMER_GEN_OUTPUT_Real(_)
+THEN
+DB_AMER_GEN_OUTPUT_Real(_MaxRange);
+
+QRY QRY_AMER_KeywordStat_Centurion_GetRange((CHARACTERGUID)_Char, (REAL)_MaxRange)
+THEN
+PROC_AMER_KeywordStat_Centurion_GetRange_Manip(_Char);
+
+//Hook into this to manipulate DB_AMER_GEN_OUTPUT_Real()--the range allowed for this Centurion reaction.
+//PROC PROC_AMER_KeywordStat_Centurion_GetRange_Manip((CHARACTERGUID)_Char)
+//THEN
+//DB_NOOP(1);
+*/
+
+//END_REGION
+
+
+//REGION Defiance.
+
+//Checking to activate the internal logic whenever requesting an activation, as some activations may be possible without any
+//character having the keyword.
+PROC PROC_AMER_KeywordStat_Defiance_Activate((CHARACTERGUID)_Char)
+THEN
+PROC_AMER_GEN_Goal_Activate("AMER_GEN_Stats_Keywords_Defiance");
+
+//END_REGION
+
+
+//REGION Incarnate Champion.
+
+PROC PROC_AMER_KeywordStat_IncarnateChampion_Create((CHARACTERGUID)_Char, (REAL)_X, (REAL)_Y, (REAL)_Z, (STRING)_Surface)
+AND
+QRY_AMER_GEN_GetSurfaceKeyword(_Surface, "", "INF_BLOOD_G", "INF_FIRE_G", "INF_WATER_G", "INF_OIL_G", "INF_POISON_G", "INF_ELECTRIC_G", "INF_WATER_G", "", "", "INF_FIRE_G")
+AND
+DB_AMER_GEN_OUTPUT_String(_Infusion)
+THEN
+PROC_AMER_Spells_Incarnate_TryStoreInfusion(_Char, "Summons_GiantIncarnate_13f9314d-e744-4dc5-acf2-c6bf77a04892", _Infusion, _Surface);
+PROC_AMER_Summoning_TeleportNextTo(_Char, "Summons_GiantIncarnate_13f9314d-e744-4dc5-acf2-c6bf77a04892", _X, _Y, _Z, 1);
+PROC_AMER_GEN_CharacterCauseExplosionAtPos(_Char, _X, _Y, _Z, "Projectile_AMER_SCRIPT_Summon_IncarnateChampion");
+
+//END_REGION
+
+
+//REGION Occultist.
+
+PROC PROC_AMER_Reaction_Fire((CHARACTERGUID)_Char, (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, "AMER_Occultist", (STRING)_RequestID, (INTEGER)_RitualBool)
+AND
+QRY_AMER_KeywordStat_Occultist_GetBaneDuration(_Char, _Target, _RequestID)
+AND
+DB_AMER_KeywordStat_OUTPUT_Real(_Duration)
+THEN
+PlayEffect(_Char, "RS3_FX_Skills_Voodoo_Cast_Aoe_Voodoo_Purple_Root_01_Old", "Dummy_Root");
+PlayEffect(_Target, "RS3_FX_Skills_Voodoo_Curse_Target_Ground_01", "root");
+PROC_AMER_KeywordStat_Occultist_Bane_Apply(_Target, _Char, _Duration);
+
+
+QRY QRY_AMER_KeywordStat_Occultist_GetBaneDuration((CHARACTERGUID)_Char, (CHARACTERGUID)_Target, (STRING)_RequestID)
+AND
+DB_AMER_KeywordStat_OUTPUT_Real(_OldOutput)
+THEN
+NOT DB_AMER_KeywordStat_OUTPUT_Real(_OldOutput);
+
+QRY QRY_AMER_KeywordStat_Occultist_GetBaneDuration((CHARACTERGUID)_Char, (CHARACTERGUID)_Target, (STRING)_RequestID)
+THEN
+DB_AMER_KeywordStat_OUTPUT_Real(12.0);      //Default duration is 2 turns.
+PROC_AMER_KeywordStat_Occultist_ManipulateDuration(_Char, _Target, _RequestID);
+
+//Hook into this to manipulate DB_AMER_KeywordStat_OUTPUT_Real()--
+//The duration of this Bane's application.
+PROC PROC_AMER_KeywordStat_Occultist_ManipulateDuration((CHARACTERGUID)_Char, (CHARACTERGUID)_Target, (STRING)_RequestID)
+THEN
+DB_NOOP(1);
+
+
+//Remove old bane when applying a new one.
+PROC PROC_AMER_KeywordStat_Occultist_Bane_Apply((CHARACTERGUID)_Target, (CHARACTERGUID)_Source, (REAL)_Duration)
+AND
+DB_AMER_KeywordStat_Occultist_Bane_Active(_Target, _OldSource, _OldBane)
+THEN
+NOT DB_AMER_KeywordStat_Occultist_Bane_Active(_Target, _OldSource, _OldBane);
+PROC_AMER_KeywordStat_Occultist_Bane_FinalDamage(_Target, _OldSource, _OldBane);
+DB_AMER_Status_StatusLostBlocked_Oneshot(_Target, "AMER_BANE");
+RemoveStatus(_Target, "AMER_BANE");
+
+PROC PROC_AMER_KeywordStat_Occultist_Bane_Apply((CHARACTERGUID)_Target, (CHARACTERGUID)_Source, (REAL)_Duration)
+THEN
+ApplyStatus(_Target, "AMER_BANE", _Duration, 0, _Source);
+DB_AMER_KeywordStat_Occultist_Bane_Active(_Target, _Source, 0);
+PROC_AMER_KeywordStat_Occultist_Bane_Applied(_Target, _Source);
+PROC_AMER_GEN_Goal_Activate("AMER_GEN_Stats_Keywords_Occultist_BaneInternal");
+
+
+//Hook into this to act upon a Bane application being completed. The most likely
+//reason for doing this would be to manipulate DB_AMER_KeywordStat_Occultist_Bane_Active(),
+//as it has just been set at this point.
+PROC PROC_AMER_KeywordStat_Occultist_Bane_Applied((CHARACTERGUID)_Target, (CHARACTERGUID)_Source)
+THEN
+DB_NOOP(1);
+
+PROC PROC_AMER_CharLeftCombat((CHARACTERGUID)_Char, (INTEGER)_Combat)
+THEN
+PROC_AMER_KeywordStat_Occultist_Bane_Apply(_Char, _Char, 0.0);
+
+//END_REGION
+
+
+//REGION Paucity.
+
+PROC PROC_AMER_KeywordStat_Paucity_Activate((CHARACTERGUID)_Char, (CHARACTERGUID)_Source, (GUIDSTRING)_Attacker)
+AND
+QRY_AMER_KeywordStat_Paucity_GetDuration(_Source)
+AND
+DB_AMER_KeywordStat_OUTPUT_Real(_Duration)
+THEN
+PROC_AMER_KeywordStat_Paucity_Activate(_Char, _Source, _Attacker, _Duration);
+
+PROC PROC_AMER_KeywordStat_Paucity_Activate((CHARACTERGUID)_Char, (CHARACTERGUID)_Source, (GUIDSTRING)_Attacker, (REAL)_Duration)
+AND
+NOT DB_AMER_ExtendedStat_AddedStat(_Char, "Paucity_Blocked", _, _, _, _)
+AND
+QRY_AMER_GEN_Scaling_GetScaledValue(_Char, 15.0, 2.0, 0.0, "Embodiment", "Entropy")
+AND
+DB_AMER_GEN_OUTPUT_Real(_Leech)
+THEN
+//PROC_AMER_TempStat_StatusMod_AddFlexStat_Scaling(_Char, "AMER_PAUCITY", "Stat", "LIFESTEAL", "Paucity_BaseLeech", 0, "Embodiment", "Entropy", 15.0, 2.0, 2000);
+PlayEffect(_Char, "AMER_RS3_FX_Paucity");	//Same as RS3_FX_Skills_Voodoo_TerrifyingCruelty_TargetEffect_01 but doesn't have camera shake.
+PlayEffect(_Char, "RS3_FX_Skills_VampiricHunder_Impact_Root_01");
+//ApplyStatus(_Char, "AMER_PAUCITY", _Duration, 0, _Source);
+PROC_AMER_GEN_RemoveAndApplyStatus(_Char, "AMER_PAUCITY", _Duration, _Source);
+PROC_AMER_StatusMod_FlexStat_TryApplyModForStatus(_Char, _Source, "AMER_PAUCITY", "Stat", "LIFESTEAL", _Leech, "Paucity_BaseLeech");
+//CharacterStatusText(_Char, "Stats_AMER_Paucity");
+PROC_AMER_GEN_CharacterCombatLogText(_Char, "AMER_Paucity_Activated");
+
+
+
+QRY QRY_AMER_KeywordStat_Paucity_GetThreshold((CHARACTERGUID)_Char)
+AND
+DB_AMER_KeywordStat_OUTPUT_Real(_OldOutput)
+THEN
+NOT DB_AMER_KeywordStat_OUTPUT_Real(_OldOutput);
+
+QRY QRY_AMER_KeywordStat_Paucity_GetThreshold((CHARACTERGUID)_Char)
+THEN
+DB_AMER_KeywordStat_OUTPUT_Real(25.0);	//Default activation when below 25% (or less) of maximum vitality.
+
+QRY QRY_AMER_KeywordStat_Paucity_GetThreshold((CHARACTERGUID)_Char)
+THEN
+PROC_AMER_KeywordStat_Paucity_ManipulateThreshold(_Char);
+
+
+//Hook into this proc to manipulate DB_AMER_KeywordStat_OUTPUT_Real()
+//--the required damage threshold for Paucity's triggering.
+PROC PROC_AMER_KeywordStat_Paucity_ManipulateThreshold((CHARACTERGUID)_Char)
+THEN
+DB_NOOP(1);
+
+
+
+QRY QRY_AMER_KeywordStat_Paucity_GetDuration((CHARACTERGUID)_Char)
+AND
+DB_AMER_KeywordStat_OUTPUT_Real(_OldOutput)
+THEN
+NOT DB_AMER_KeywordStat_OUTPUT_Real(_OldOutput);
+
+QRY QRY_AMER_KeywordStat_Paucity_GetDuration((CHARACTERGUID)_Char)
+THEN
+DB_AMER_KeywordStat_OUTPUT_Real(6.0);
+
+QRY QRY_AMER_KeywordStat_Paucity_GetDuration((CHARACTERGUID)_Char)
+THEN
+PROC_AMER_KeywordStat_Paucity_ManipulateDuration(_Char);
+
+
+//Hook into this proc to manipulate DB_AMER_KeywordStat_OUTPUT_Real()
+//--the buff Duration of Paucity.
+PROC PROC_AMER_KeywordStat_Paucity_ManipulateDuration((CHARACTERGUID)_Char)
+THEN
+DB_NOOP(1);
+
+//END_REGION
+
+
+//REGION Predator.
+
+PROC PROC_AMER_Reaction_Fire((CHARACTERGUID)_Char, (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z, "AMER_Predator", (STRING)_RequestID, (INTEGER)_RitualBool)
+THEN
+PROC_AMER_Reaction_Restealth_Buffer(_Char, "AMER_Predator");
+PROC_AMER_KeywordStat_Predator_PreFire(_Char, _Target);
+PROC_AMER_KeywordStat_Predator_Fire(_Char, _Target, _X, _Y, _Z);
+
+PROC PROC_AMER_KeywordStat_Predator_Fire((CHARACTERGUID)_Char, (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z)
+AND
+NOT QRY_AMER_KeywordStat_Predator_OneshotOverride(_Char, _Target, _X, _Y, _Z)
+THEN
+PROC_AMER_GEN_AttackWithoutMove(_Char, _Target);
+//CharacterAttack(_Char, _Target); //This makes _Char walk into range.
+
+
+//PROC PROC_AMER_KeywordStat_Predator_PreFire((CHARACTERGUID)_Char, (CHARACTERGUID)_Target)
+//THEN
+//DB_NOOP(1);
+
+
+//Predator reactions have +30% critical chance when wielding a non-ranged weapon.
+PROC PROC_AMER_KeywordStat_Predator_PreFire((CHARACTERGUID)_Char, (CHARACTERGUID)_Target)
+AND
+NOT QRY_AMER_GEN_PlayerHasRangedWeapon(_Char)
+THEN
+PROC_AMER_TempStat_FlexStat_Add(_Char, "Stat", "CRITICALCHANCE", 30.0, 2000, "Attack");
+
+
+
+//Attempt to sneak after performing a Predator reaction, if wielding a dagger.
+PROC PROC_AMER_Reaction_Completed(_Char, "AMER_Predator", (STRING)_RequestID)
+AND
+DB_IsPlayer(_Char)      //Sneaking doesn't work for NPCs.
+AND
+QRY_AMER_GEN_PlayerHasWeaponTypeEquipped(_Char, "Knife")
+THEN
+PROC_AMER_GEN_DoFreeSneak_Delayed(_Char, 1300);
+PROC_AMER_GEN_CharacterCombatLogText(_Char, "AMER_Reactions_PredatorDaggerSneak");
+
+
+/*
+//Custom Predator weapon range condition so that it can be overridden.
+QRY QRY_AMER_Reaction_Conditions_Additional((CHARACTERGUID)_Char, "AMER_Predator", (STRING)_RequestID, (CHARACTERGUID)_Target, (REAL)_X, (REAL)_Y, (REAL)_Z)
+AND
+DB_AMER_GEN_PlayerWeaponData(_Char, _, _MaxRange, _, _)
+AND
+RealMax(_MaxRange, 2.5, _MaxRangeBounded)	//Minimum of 2.5m range.
+AND
+QRY_AMER_KeywordStat_Predator_GetRange(_Char, _MaxRangeBounded)
+AND
+DB_AMER_GEN_OUTPUT_Real(_MaxRangeFinal)
+AND
+GetDistanceTo(_Char, _Target, _Distance)
+AND
+QRY_AMER_GEN_GetAIBounds(_Char)
+AND
+DB_AMER_GEN_OUTPUT_Real(_CharBounds)
+AND
+QRY_AMER_GEN_GetAIBounds(_Target)
+AND
+DB_AMER_GEN_OUTPUT_Real(_TargetBounds)
+AND
+RealSubtract(_Distance, _CharBounds, _DistanceB)
+AND
+RealSubtract(_DistanceB, _TargetBounds, _DistanceBoundsAdjusted)    //We want to consider distance with the actors' bounds subtracted for weapon range.
+AND
+_DistanceBoundsAdjusted > _MaxRangeFinal	//Set the failure DB if distance was greater than our range.
+THEN
+DB_AMER_Reaction_Conditions_Additional_Failed(_Char, "AMER_Predator");
+
+
+QRY QRY_AMER_KeywordStat_Predator_GetRange((CHARACTERGUID)_Char, (REAL)_MaxRange)
+AND
+DB_AMER_GEN_OUTPUT_Real(_OldOutput)
+THEN
+NOT DB_AMER_GEN_OUTPUT_Real(_OldOutput);
+
+QRY QRY_AMER_KeywordStat_Predator_GetRange((CHARACTERGUID)_Char, (REAL)_MaxRange)
+THEN
+DB_AMER_GEN_OUTPUT_Real(_MaxRange);
+PROC_AMER_KeywordStat_Predator_GetRange_Manip(_Char);
+
+//Hook into this to manipulate DB_AMER_GEN_OUTPUT_Real()--the range allowed for this Predator reaction.
+//PROC PROC_AMER_KeywordStat_Predator_GetRange_Manip((CHARACTERGUID)_Char)
+//THEN
+//DB_NOOP(1);
+*/
+
+//END_REGION
+
+
+//REGION Prosperity.
+
+//Refresh Prosperity when acquiring new keyword sources while already having a source of it.
+PROC PROC_AMER_KeywordStat_Add((CHARACTERGUID)_Char, "Prosperity", (INTEGER)_Add)
+AND
+_Add > 0
+AND
+DB_AMER_KeywordStat_Added(_Char, "Prosperity", _Count)
+AND
+_Count > 1
+THEN
+PROC_AMER_KeywordStat_Prosperity_TryRefresh(_Char);
+
+//Also refresh Prosperity when losing keyword sources while still having a source of it.
+PROC PROC_AMER_KeywordStat_Add((CHARACTERGUID)_Char, "Prosperity", (INTEGER)_Add)
+AND
+_Add < 0
+AND
+DB_AMER_KeywordStat_Added(_Char, "Prosperity", _Count)
+AND
+_Count >= 1
+THEN
+PROC_AMER_KeywordStat_Prosperity_TryRefresh(_Char);
+
+//Also refresh when adding a logic flag, if the keyword is had.
+PROC PROC_AMER_KeywordStat_LogicFlag_Add((CHARACTERGUID)_Char, "Prosperity", (INTEGER)_Add)
+AND
+DB_AMER_KeywordStat_Added(_Char, "Prosperity", _Count)
+AND
+_Count >= 1
+THEN
+PROC_AMER_KeywordStat_Prosperity_TryRefresh(_Char);
+
+
+PROC PROC_AMER_KeywordStat_Prosperity_TryRefresh((CHARACTERGUID)_Char)
+AND
+CharacterGetHitpointsPercentage(_Char, _Perc)
+THEN
+PROC_AMER_KeywordStat_Prosperity_Deactivate(_Char);
+//PROC_AMER_KeywordStat_Prosperity_Activate(_Char);
+PROC_AMER_KeywordStat_Prosperity_CheckActivate(_Char, _Perc);
+
+
+PROC PROC_AMER_KeywordStat_Prosperity_CheckActivate((CHARACTERGUID)_Char, (REAL)_Perc)
+//AND
+//DB_AMER_KeywordStat_Added(_Char, "Prosperity", _)
+AND
+DB_AMER_KeywordStat_Prosperity_IsActive(_Char, _Bool)
+AND
+QRY_AMER_KeywordStat_Prosperity_GetThreshold(_Char)
+AND
+DB_AMER_KeywordStat_OUTPUT_Real(_Threshold)
+THEN
+PROC_AMER_KeywordStat_Prosperity_CheckActivate(_Char, _Perc, _Bool, _Threshold);
+
+
+//If Prosperity was on, try to turn it off.
+PROC PROC_AMER_KeywordStat_Prosperity_CheckActivate((CHARACTERGUID)_Char, (REAL)_VitPerc, 1, (REAL)_Threshold)
+AND
+_VitPerc < _Threshold
+AND
+GetStatusTurns(_Char, "AMER_PROSPERITY", _Turns)
+AND
+_Turns < 0      //Prosperity granted temporarily (not negative duration) is intended to ignore the standard Vitality deactivation.
+THEN
+PROC_AMER_KeywordStat_Prosperity_Deactivate(_Char);
+
+//If Prosperity was off, try to turn it on.
+PROC PROC_AMER_KeywordStat_Prosperity_CheckActivate((CHARACTERGUID)_Char, (REAL)_VitPerc, 0, (REAL)_Threshold)
+AND
+DB_AMER_KeywordStat_Added(_Char, "Prosperity", _Count)  //Only do threshold activation if we own the keyword.
+AND
+_VitPerc >= _Threshold
+THEN
+PROC_AMER_KeywordStat_Prosperity_Activate(_Char);
+
+
+QRY QRY_AMER_KeywordStat_Prosperity_GetThreshold((CHARACTERGUID)_Char)
+AND
+DB_AMER_KeywordStat_OUTPUT_Real(_OldOutput)
+THEN
+NOT DB_AMER_KeywordStat_OUTPUT_Real(_OldOutput);
+
+QRY QRY_AMER_KeywordStat_Prosperity_GetThreshold((CHARACTERGUID)_Char)
+AND
+QRY_AMER_UI_Ascension_GetEmbodimentCount(_Char, "Life")
+AND
+DB_AMER_GEN_OUTPUT_Integer(_Life)
+AND
+Real(_Life, _LifeReal)
+AND
+QRY_AMER_UI_Ascension_GetEmbodimentCount(_Char, "Form")
+AND
+DB_AMER_GEN_OUTPUT_Integer(_Form)
+AND
+Real(_Form, _FormReal)
+AND
+RealSum(_LifeReal, _FormReal, _Bonus)
+AND
+RealSubtract(90.0, _Bonus, _Base)	//Default activation at 90% - 1% per Life or Form.
+THEN
+DB_AMER_KeywordStat_OUTPUT_Real(_Base);
+
+QRY QRY_AMER_KeywordStat_Prosperity_GetThreshold((CHARACTERGUID)_Char)
+THEN
+PROC_AMER_KeywordStat_Prosperity_ManipulateThreshold(_Char);
+
+
+//Hook into this proc to manipulate DB_AMER_KeywordStat_OUTPUT_Real()
+//--the required damage threshold for Prosperity's triggering.
+PROC PROC_AMER_KeywordStat_Prosperity_ManipulateThreshold((CHARACTERGUID)_Char)
+THEN
+DB_NOOP(1);
+
+
+
+//Cause Prosperity to activate when it is first acquired.
+PROC PROC_AMER_KeywordStat_Added((CHARACTERGUID)_Char, "Prosperity")
+AND
+CharacterGetHitpointsPercentage(_Char, _Perc)
+THEN
+DB_AMER_KeywordStat_Prosperity_IsActive(_Char, 0);
+PROC_AMER_KeywordStat_Prosperity_CheckActivate(_Char, _Perc);
+
+
+//Cause Prosperity to deactivate when it is lost.
+PROC PROC_AMER_KeywordStat_Lost((CHARACTERGUID)_Char, "Prosperity")
+THEN
+RemoveStatus(_Char, "AMER_PROSPERITY");
+
+PROC PROC_AMER_KeywordStat_Lost((CHARACTERGUID)_Char, "Prosperity")
+AND
+DB_AMER_KeywordStat_Prosperity_IsActive(_Char, _Bool)
+THEN
+NOT DB_AMER_KeywordStat_Prosperity_IsActive(_Char, _Bool);
+
+
+PROC PROC_AMER_KeywordStat_Prosperity_Activate((CHARACTERGUID)_Char)
+THEN
+PROC_AMER_KeywordStat_Prosperity_Activate(_Char, -1.0);
+
+PROC PROC_AMER_KeywordStat_Prosperity_Activate((CHARACTERGUID)_Char, (REAL)_Duration)
+AND
+HasActiveStatus(_Char, "AMER_PROSPERITY", _StatusExistsBool)
+THEN
+PROC_AMER_KeywordStat_Prosperity_Activate(_Char, _Duration, _StatusExistsBool);
+
+//If Prosperity is already active, applying it again will remove the existing status, which will be handled as a deactivation if we don't block the removal.
+PROC PROC_AMER_KeywordStat_Prosperity_Activate((CHARACTERGUID)_Char, (REAL)_Duration, 1)
+THEN
+DB_AMER_Status_StatusLostBlocked_Oneshot(_Char, "AMER_PROSPERITY");
+
+PROC PROC_AMER_KeywordStat_Prosperity_Activate((CHARACTERGUID)_Char, (REAL)_Duration, (INTEGER)_StatusExistsBool)
+AND
+NOT DB_AMER_UI_UsersInUI(_, _, _Char)   //Don't Play FX while in a UI, it's super annoying.
+THEN
+PlayEffect(_Char, "RS3_FX_Skills_Divine_Bless_Impact_01", "");
+CharacterStatusText(_Char, "Stats_AMER_Prosperity");
+
+PROC PROC_AMER_KeywordStat_Prosperity_Activate((CHARACTERGUID)_Char, (REAL)_Duration, (INTEGER)_StatusExistsBool)
+THEN
+ApplyStatus(_Char, "AMER_PROSPERITY", _Duration, 0, _Char);
+
+PROC PROC_AMER_KeywordStat_Prosperity_Activate((CHARACTERGUID)_Char, (REAL)_Duration, (INTEGER)_StatusExistsBool)
+AND
+DB_AMER_KeywordStat_Prosperity_IsActive(_Char, _Bool)
+THEN
+NOT DB_AMER_KeywordStat_Prosperity_IsActive(_Char, _Bool);
+
+PROC PROC_AMER_KeywordStat_Prosperity_Activate((CHARACTERGUID)_Char, (REAL)_Duration, (INTEGER)_StatusExistsBool)
+THEN
+DB_AMER_KeywordStat_Prosperity_IsActive(_Char, 1);
+
+
+PROC PROC_AMER_KeywordStat_Prosperity_Deactivate((CHARACTERGUID)_Char)
+AND
+DB_AMER_KeywordStat_Prosperity_IsActive(_Char, _Bool)
+THEN
+NOT DB_AMER_KeywordStat_Prosperity_IsActive(_Char, _Bool);
+
+PROC PROC_AMER_KeywordStat_Prosperity_Deactivate((CHARACTERGUID)_Char)
+THEN
+DB_AMER_KeywordStat_Prosperity_IsActive(_Char, 0);
+
+PROC PROC_AMER_KeywordStat_Prosperity_Deactivate((CHARACTERGUID)_Char)
+THEN
+RemoveStatus(_Char, "AMER_PROSPERITY");
+
+//END_REGION
+
+
+//REGION Purity.
+
+//Base effects of Purity aura.
+PROC PROC_AMER_KeywordStat_FirstLogicAdded((CHARACTERGUID)_Char, "Purity")
+THEN
+PROC_AMER_StatusMod_Add_ExtendedStat(_Char, "AMER_PURITY", "Regen_All", "", "", "", 8.0, "PurityRegen_Base", 0);
+PROC_AMER_ScalingStat_StatusMod_ExtendedStat_Add(_Char, "Embodiment", "Life", "AMER_PURITY", "Regen_All", "", "", "", "PurityRegen_Scaling", 0, 1.5);
+
+PROC PROC_AMER_KeywordStat_AllLogicRemoved((CHARACTERGUID)_Char, "Purity")
+THEN
+PROC_AMER_StatusMod_Add_ExtendedStat(_Char, "AMER_PURITY", "Regen_All", "", "", "", -8.0, "PurityRegen_Base", 0);
+PROC_AMER_ScalingStat_StatusMod_ExtendedStat_Add(_Char, "Embodiment", "Life", "AMER_PURITY", "Regen_All", "", "", "", "PurityRegen_Scaling", 0, -1.5);
+
+
+PROC PROC_AMER_KeywordStat_Purity_TryActivate((CHARACTERGUID)_Char, (CHARACTERGUID)_DataSource)
+AND
+HasActiveStatus(_Char, "AMER_PURITY_COOLDOWN", _Bool)
+THEN
+PROC_AMER_KeywordStat_Purity_TryActivate(_Char, _DataSource, _Char, _Bool);
+
+
+PROC PROC_AMER_KeywordStat_Purity_TryActivate((CHARACTERGUID)_Char, (CHARACTERGUID)_DataSource, (GUIDSTRING)_Source, 1)
+THEN
+PROC_AMER_KeywordStat_Purity_Activate_OnCooldown(_Char, _DataSource, _Source);
+
+//Provide a hook for other effects when Purity tries to activate, but is on cooldown.
+PROC PROC_AMER_KeywordStat_Purity_Activate_OnCooldown((CHARACTERGUID)_Char, (CHARACTERGUID)_DataSource, (GUIDSTRING)_Source)
+THEN
+DB_NOOP(1);
+
+PROC PROC_AMER_KeywordStat_Purity_TryActivate((CHARACTERGUID)_Char, (CHARACTERGUID)_DataSource, (GUIDSTRING)_Source, 0)
+THEN
+PROC_AMER_KeywordStat_Purity_Activate(_Char, _DataSource, _Source);
+
+PROC PROC_AMER_KeywordStat_Purity_Activate((CHARACTERGUID)_Char, (CHARACTERGUID)_DataSource, (GUIDSTRING)_Source)
+AND
+QRY_AMER_KeywordStat_Purity_GetCooldown(_Char)
+AND
+DB_AMER_KeywordStat_OUTPUT_Real(_Cooldown)
+AND
+QRY_AMER_GEN_Scaling_GetScaledValue(_Char, 15.0, 1.5, 0.0, "Embodiment", "Life")	//Base heal of 15% +1.5% per Life embodied.
+AND
+DB_AMER_GEN_OUTPUT_Real(_Heal)
+THEN
+PROC_AMER_GEN_Heal_Percentage(_Char, _Heal, "All", _DataSource, 1, 1);
+ApplyStatus(_Char, "AMER_PURITY_AURA", 12.0, 0, _DataSource);
+ApplyStatus(_Char, "AMER_PURITY_COOLDOWN", _Cooldown, 0, _DataSource);	//Can apply statusmod data for AMER_PURITY to _Char if _Char != _DataSource, and bind that data to AMER_PURITY_AURA.
+PlayEffect(_Char, "AMER_RS3_FX_Purity", "");
+//CharacterStatusText(_Char, "Stats_AMER_Purity_Aura");
+PROC_AMER_GEN_CharacterCombatLogText(_Char, "AMER_Purity_Activated");
+
+PROC PROC_AMER_KeywordStat_Purity_Activate((CHARACTERGUID)_Char, (CHARACTERGUID)_DataSource, (GUIDSTRING)_Source)
+AND
+_Char != _DataSource	//If _Char is not _DataSource, inherit statusmod data for AMER_PURITY from _DataSource, but bind it to AMER_PURITY_AURA.
+THEN
+PROC_AMER_KeywordStat_Purity_InheritData(_Char, _DataSource);
+
+PROC PROC_AMER_KeywordStat_Purity_InheritData((CHARACTERGUID)_Char, (CHARACTERGUID)_DataSource)
+AND
+DB_AMER_StatusMod_OnApply_FlexStat(_DataSource, "AMER_PURITY", _Type, _Stat, _Amount, _StackID, _SelfBool)
+AND
+NOT DB_AMER_StatusMod_OnApply_FlexStat(_Char, "AMER_PURITY", _Type, _Stat, _, _StackID, _)
+THEN
+DB_AMER_StatusMod_BindToStatus("AMER_PURITY");
+PROC_AMER_StatusMod_Add_FlexStat(_Char, "AMER_PURITY", _Type, _Stat, _Amount, _StackID, _SelfBool);
+
+PROC PROC_AMER_KeywordStat_Purity_InheritData((CHARACTERGUID)_Char, (CHARACTERGUID)_DataSource)
+AND
+DB_AMER_StatusMod_OnApply_ExtendedStat(_DataSource, "AMER_PURITY", _Stat, _Extraprop1, _Extraprop2, _Extraprop3, _Amount, _StackID, _SelfBool)
+AND
+NOT DB_AMER_StatusMod_OnApply_ExtendedStat(_Char, "AMER_PURITY", _Stat, _Extraprop1, _Extraprop2, _Extraprop3, _, _StackID, _)
+THEN
+DB_AMER_StatusMod_BindToStatus("AMER_PURITY");
+PROC_AMER_StatusMod_Add_ExtendedStat(_Char, "AMER_PURITY", _Stat, _Extraprop1, _Extraprop2, _Extraprop3, _Amount, _StackID, _SelfBool);
+
+
+
+QRY QRY_AMER_KeywordStat_Purity_GetThreshold((CHARACTERGUID)_Char)
+AND
+DB_AMER_KeywordStat_OUTPUT_Real(_OldOutput)
+THEN
+NOT DB_AMER_KeywordStat_OUTPUT_Real(_OldOutput);
+
+QRY QRY_AMER_KeywordStat_Purity_GetThreshold((CHARACTERGUID)_Char)
+AND
+QRY_AMER_GEN_Scaling_GetScaledValue(_Char, 30.0, 1.5, 0.0, "Embodiment", "Life")	//Default activation when below (30% + (1.5% x Life)).
+AND
+DB_AMER_GEN_OUTPUT_Real(_Threshold)
+THEN
+DB_AMER_KeywordStat_OUTPUT_Real(_Threshold);
+
+QRY QRY_AMER_KeywordStat_Purity_GetThreshold((CHARACTERGUID)_Char)
+THEN
+PROC_AMER_KeywordStat_Purity_ManipulateThreshold(_Char);
+
+//Hook into this proc to manipulate DB_AMER_KeywordStat_OUTPUT_Real()
+//--the required damage threshold for Purity's triggering.
+PROC PROC_AMER_KeywordStat_Purity_ManipulateThreshold((CHARACTERGUID)_Char)
+THEN
+DB_NOOP(1);
+
+
+QRY QRY_AMER_KeywordStat_Purity_GetCooldown((CHARACTERGUID)_Char)
+AND
+DB_AMER_KeywordStat_OUTPUT_Real(_OldOutput)
+THEN
+NOT DB_AMER_KeywordStat_OUTPUT_Real(_OldOutput);
+
+QRY QRY_AMER_KeywordStat_Purity_GetCooldown((CHARACTERGUID)_Char)
+THEN
+DB_AMER_KeywordStat_OUTPUT_Real(24.0);	//Default cooldown is 4 turns.
+
+QRY QRY_AMER_KeywordStat_Purity_GetCooldown((CHARACTERGUID)_Char)
+THEN
+PROC_AMER_KeywordStat_Purity_ManipulateCooldown(_Char);
+
+//Hook into this proc to manipulate DB_AMER_KeywordStat_OUTPUT_Real()
+//--the cooldown of Purity.
+PROC PROC_AMER_KeywordStat_Purity_ManipulateCooldown((CHARACTERGUID)_Char)
+AND
+DB_AMER_ExtendedStat_AddedStat(_Char, "Purity_CooldownManip", _, _, _, _Amount)
+AND
+DB_AMER_KeywordStat_OUTPUT_Real(_OldOutput)
+AND
+RealSum(_OldOutput, _Amount, _NewCooldown)
+THEN
+NOT DB_AMER_KeywordStat_OUTPUT_Real(_OldOutput);
+DB_AMER_KeywordStat_OUTPUT_Real(_NewCooldown);
+
+
+//END_REGION
+
+
+/*
+//REGION Shield Implicit MaxRes
+//Added as a keyword stat to protect against faulty equip/unequip event throws.
+
+PROC PROC_AMER_KeywordStat_Added((CHARACTERGUID)_Char, "ShieldImplicitMaxRes")
+THEN
+PROC_AMER_ExtendedStat_CharacterAddStat(_Char, "MaxRes", "ALLRES", "ShieldImplicitRes", "", 10.0);
+
+PROC PROC_AMER_KeywordStat_Lost((CHARACTERGUID)_Char, "ShieldImplicitMaxRes")
+THEN
+PROC_AMER_ExtendedStat_CharacterAddStat(_Char, "MaxRes", "ALLRES", "ShieldImplicitRes", "", -10.0);
+
+//END_REGION
+*/
+
+
+//REGION Violent Strikes.
+
+//Can hook into this to allow other conditions to satisfy.
+QRY QRY_AMER_KeywordStat_ViolentStrikes_CanActivate((CHARACTERGUID)_Source)
+AND
+DB_AMER_Combat_ActiveChar(_, _, _, _Source)
+THEN
+DB_NOOP(1);
+
+
+/*
+//If the Violent Strikes buff is not present, roll to see if we should activate it.
+PROC PROC_AMER_KeywordStat_ViolentStrikes_OnHit((CHARACTERGUID)_Source, (CHARACTERGUID)_Target, 0)
+AND
+QRY_AMER_KeywordStat_ViolentStrikes_GetChance(_Source, _Target)
+AND
+DB_AMER_KeywordStat_OUTPUT_Real(_Chance)
+AND
+QRY_AMER_GEN_RandomSuccess_FromReal(_Chance)
+THEN
+PROC_AMER_KeywordStat_ViolentStrikes_Activate(_Source);
+*/
+
+PROC PROC_AMER_KeywordStat_ViolentStrikes_Activate((CHARACTERGUID)_Source)
+THEN
+PROC_AMER_KeywordStat_ViolentStrikes_Activate_NoChoke(_Source);
+DB_AMER_KeywordStat_ViolentStrikes_Choke(_Source);
+ProcObjectTimer(_Source, "AMER_ViolentStrikes_Choke", 250);
+
+PROC PROC_AMER_KeywordStat_ViolentStrikes_Activate_NoChoke((CHARACTERGUID)_Source)
+THEN
+PlayEffect(_Source, "AMER_FX_GP_Keyword_ViolentStrikes_Activate");
+//PROC_AMER_StatusMod_ExtendedStat_TryApplyModForStatus(_Source, _Source, "AMER_VIOLENTSTRIKES", "ViolentStrikeOnHit", "", "", "", 1.0, "KeywordStat_ViolentStrike_GenOnHit"); //Trying with adding statusmod as tempstat instead, due to VS being applied/removed too frequently and as such causing racing issues.
+//ApplyStatus(_Source, "AMER_VIOLENTSTRIKES", 12.0, 0, _Source);
+PROC_AMER_GEN_RemoveAndApplyStatus(_Source, "AMER_VIOLENTSTRIKES", 12.0, _Source);
+CharacterStatusText(_Source, "Stats_AMER_ViolentStrikes");
+
+PROC PROC_AMER_KeywordStat_ViolentStrikes_Activate_NoChoke((CHARACTERGUID)_Source)
+AND
+//NOT DB_AMER_StatusMod_OnApply_ExtendedStat(_Source, "AMER_VIOLENTSTRIKES", "ViolentStrikeOnHit", "", "", "", _, "KeywordStat_ViolentStrike_GenOnHit", 0)    //If not had, add statusmod temporarily for VS buff to actually do VS.
+NOT DB_AMER_StatusMod_ExtendedStat_ActiveMods(_Source, _, "AMER_VIOLENTSTRIKES", "ViolentStrikeOnHit", "", "", "", _, "KeywordStat_ViolentStrike_GenOnHit")
+THEN
+//PROC_AMER_TempStat_StatusMod_AddExtendedStat(_Source, "AMER_VIOLENTSTRIKES", "ViolentStrikeOnHit", "", "", "", 1.0, "KeywordStat_ViolentStrike_GenOnHit", 0, 250, "");
+PROC_AMER_StatusMod_ExtendedStat_TryApplyModForStatus(_Source, _Source, "AMER_VIOLENTSTRIKES", "ViolentStrikeOnHit", "", "", "", 1.0, "KeywordStat_ViolentStrike_GenOnHit");
+
+
+/*
+//If the Violent Strikes buff *is* present, perform the damaging effect.
+PROC PROC_AMER_KeywordStat_ViolentStrikes_OnHit((CHARACTERGUID)_Source, (CHARACTERGUID)_Target, 1)
+AND
+QRY_AMER_KeywordStat_ViolentStrikes_GetPower(_Source)
+AND
+DB_AMER_KeywordStat_OUTPUT_Integer(_Power)
+AND
+IntegerMin(_Power, 100, _PowerBoundedMax)   //Maximum is 100, to raise this requires more projectile entries to reflect the new possibilities.
+AND
+IntegerMax(_PowerBoundedMax, 10, _PowerBoundedFinal)   //Minimum is 10, to lower this requires more projectile entries to reflect the new possibilities.
+AND
+IntegertoString(_PowerBoundedFinal, _PowerStr)
+AND
+StringConcatenate("Projectile_AMER_SCRIPT_ViolentStrike_", _PowerStr, _Projectile)
+THEN
+PROC_AMER_KeywordStat_ViolentStrikes_Fire(_Source, _Target, _Projectile);
+*/
+
+PROC PROC_AMER_KeywordStat_ViolentStrikes_Fire((CHARACTERGUID)_Source, (CHARACTERGUID)_Target, (STRING)_Projectile)
+AND
+QRY_AMER_GEN_CharacterGetDisplayName(_Target)
+AND
+DB_AMER_GEN_OUTPUT_String(_TargetName)
+AND
+QRY_AMER_GEN_TSK_Get("AMER_KeywordStat_VoilentStrike_Fire")
+AND
+DB_AMER_GEN_OUTPUT_String(_LogText)
+THEN
+PROC_AMER_StatusMod_ActiveMods_Clear(_Source, "AMER_VIOLENTSTRIKES");   //Waiting for RemoveStatus for the related extendedstat is not fast enough
+RemoveStatus(_Source, "AMER_VIOLENTSTRIKES");
+PROC_AMER_GEN_CharacterCauseExplosion(_Source, _Target, _Projectile);
+PROC_AMER_GEN_CharacterCombatLogText_Param_Str(_Source, _LogText, _TargetName);
+DB_AMER_KeywordStat_ViolentStrikes_Choke(_Source);
+ProcObjectTimer(_Source, "AMER_ViolentStrikes_Choke", 250);
+
+
+//We use a choke for the effects of Violent Strikes to prevent the effect from
+//perpetuating itself, as well as to prevent multi-hit spells from becoming too
+//effective with this Keyword.
+PROC ProcObjectTimerFinished((CHARACTERGUID)_Char, "AMER_ViolentStrikes_Choke")
+THEN
+NOT DB_AMER_KeywordStat_ViolentStrikes_Choke(_Char);
+
+
+//REGION Queries for Violent Strikes parameters.
+
+QRY QRY_AMER_KeywordStat_ViolentStrikes_GetChance((CHARACTERGUID)_Source, (CHARACTERGUID)_Target)
+AND
+DB_AMER_KeywordStat_OUTPUT_Real(_OldOutput)
+THEN
+NOT DB_AMER_KeywordStat_OUTPUT_Real(_OldOutput);
+
+QRY QRY_AMER_KeywordStat_ViolentStrikes_GetChance((CHARACTERGUID)_Source, (CHARACTERGUID)_Target)
+AND
+QRY_AMER_GEN_Scaling_GetScaledValue(_Source, 0.15, 0.03, 0.0, "Embodiment", "Force")	//Base chance of 15% + (3% x Force embodied).
+AND
+DB_AMER_GEN_OUTPUT_Real(_Chance)
+THEN
+DB_AMER_KeywordStat_OUTPUT_Real(_Chance);
+
+QRY QRY_AMER_KeywordStat_ViolentStrikes_GetChance((CHARACTERGUID)_Source, (CHARACTERGUID)_Target)
+THEN
+PROC_AMER_KeywordStat_ViolentStrikes_ManipulateChance(_Source, _Target);
+
+
+//Hook into this proc to manipulate DB_AMER_KeywordStat_OUTPUT_Real()
+//--the chance on attack to activate Violent Strikes.
+PROC PROC_AMER_KeywordStat_ViolentStrikes_ManipulateChance((CHARACTERGUID)_Char, (CHARACTERGUID)_Target)
+THEN
+DB_NOOP(1);
+
+
+
+QRY QRY_AMER_KeywordStat_ViolentStrikes_GetPower((CHARACTERGUID)_Source)
+AND
+DB_AMER_KeywordStat_OUTPUT_Integer(_OldOutput)
+THEN
+NOT DB_AMER_KeywordStat_OUTPUT_Integer(_OldOutput);
+
+QRY QRY_AMER_KeywordStat_ViolentStrikes_GetPower((CHARACTERGUID)_Source)
+THEN
+DB_AMER_KeywordStat_OUTPUT_Integer(30); //Default is 30%.
+
+QRY QRY_AMER_KeywordStat_ViolentStrikes_GetPower((CHARACTERGUID)_Source)
+THEN
+PROC_AMER_KeywordStat_ViolentStrikes_ManipulatePower(_Source);
+
+
+//Hook into this proc to manipulate DB_AMER_KeywordStat_OUTPUT_Integer()
+//--the weapon damage percentile that the Violent Strike will deal.
+PROC PROC_AMER_KeywordStat_ViolentStrikes_ManipulatePower((CHARACTERGUID)_Char)
+THEN
+DB_NOOP(1);
+
+//END_REGION
+
+//END_REGION
+
+
+//REGION Vitality Void.
+
+//Checking to activate the internal logic whenever requesting an activation, as some activations may be possible without any
+//character having the keyword.
+PROC PROC_AMER_KeywordStat_VitalityVoid_Fire((CHARACTERGUID)_Char, (INTEGER)_Amount)
+THEN
+PROC_AMER_GEN_Goal_Activate("AMER_GEN_Stats_Keywords_VitalityVoid");
+
+//Check for timed completion immediately after activation because Vitality Void has a very instantaneous effect.
+PROC PROC_AMER_KeywordStat_VitalityVoid_Fire((CHARACTERGUID)_Char, (INTEGER)_Amount)
+THEN
+PROC_AMER_KeywordStat_CheckDeactivateLogic("VitalityVoid");
+
+//END_REGION
+
+
+//REGION Voracity.
+//Voracity effects are 0.2 times normal when activated from a summon, but other effects could
+//directly activate Voracity with a different multiplier.
+
+PROC PROC_AMER_Combat_EnemyDiedInCombat((CHARACTERGUID)_Char, (CHARACTERGUID)_Dying, (INTEGER)_IsSummon)
+AND
+Real(_IsSummon, _IsSummonReal)
+AND
+RealProduct(_IsSummonReal, 0.8, _SummonPenalty)
+AND
+RealSubtract(1.0, _SummonPenalty, _Multiplier)
+THEN
+PROC_AMER_KeywordStat_Voracity_Activate(_Char, _Dying, _Multiplier);
+
+
+//Hook into this to act upon a Voracity activation.
+//PROC PROC_AMER_KeywordStat_Voracity_Activate((CHARACTERGUID)_Char, (CHARACTERGUID)_Dying, (REAL)_Multiplier)
+//THEN
+//DB_NOOP(1);
+
+//END_REGION
+
+
+//REGION Ward.
+
+PROC PROC_AMER_KeywordStat_Ward_Activate((CHARACTERGUID)_CharHurt, (CHARACTERGUID)_Source)
+THEN
+PROC_AMER_KeywordStat_Ward_Activate(_CharHurt, _Source, _CharHurt);
+
+//Checking to activate the internal logic whenever requesting an activation, as some activations may be possible without any
+//character having the keyword.
+PROC PROC_AMER_KeywordStat_Ward_Activate((CHARACTERGUID)_CharHurt, (CHARACTERGUID)_Source, (CHARACTERGUID)_WardSource)
+THEN
+PROC_AMER_GEN_Goal_Activate("AMER_GEN_Stats_Keywords_Ward");
+
+//Check for timed completion immediately after activation because Ward has a very instantaneous effect.
+PROC PROC_AMER_KeywordStat_Ward_Activate((CHARACTERGUID)_CharHurt, (CHARACTERGUID)_Source, (CHARACTERGUID)_WardSource)
+THEN
+PROC_AMER_KeywordStat_CheckDeactivateLogic("Ward");
+
+//END_REGION
+
+
+//REGION Wither.
+
+PROC PROC_AMER_GEN_FilteredStatus_Applied((CHARACTERGUID)_Char, (CHARACTERGUID)_Source, "AMER_WITHER", (INTEGER)_Turns)
+AND
+QRY_AMER_KeywordStat_Wither_GetPowerDebuff(_Source)
+AND
+DB_AMER_KeywordStat_OUTPUT_Real(_Debuff)
+THEN
+//CharacterStatusText(_Char, "Stats_AMER_Wither");
+PROC_AMER_StatusMod_ExtendedStat_TryApplyModForStatus(_Char, _Source, "AMER_WITHER", "AttributeIntelligenceEffect_Multiplier", "", "", "", _Debuff, "AMER_Wither_Base");
+PROC_AMER_KeywordStat_Wither_TryBHStacks(_Char, _Source);
+
+PROC PROC_AMER_KeywordStat_Wither_TryBHStacks((CHARACTERGUID)_Char, (CHARACTERGUID)_Source)
+AND
+QRY_AMER_GEN_OncePerRound_PerChar(_Source, "AMER_KeywordStat_WitherBHStacks", _Char)
+THEN
+DB_AMER_GEN_OncePerRound_PerChar(_Source, "AMER_KeywordStat_WitherBHStacks", _Char);
+PROC_AMER_BatteredHarried_DirectManip(_Char, 2, 1, _Source);
+
+
+QRY QRY_AMER_KeywordStat_Wither_GetPowerDebuff((CHARACTERGUID)_Char)
+AND
+DB_AMER_KeywordStat_OUTPUT_Real(_OldOutput)
+THEN
+NOT DB_AMER_KeywordStat_OUTPUT_Real(_OldOutput);
+
+QRY QRY_AMER_KeywordStat_Wither_GetPowerDebuff((CHARACTERGUID)_Char)
+AND
+QRY_AMER_GEN_Scaling_GetScaledValue(_Char, -0.15, -0.02, 0.0, "Embodiment", "Entropy")
+AND
+DB_AMER_GEN_OUTPUT_Real(_Scaling)
+THEN
+DB_AMER_KeywordStat_OUTPUT_Real(_Scaling);
+
+
+QRY QRY_AMER_KeywordStat_Wither_GetPowerDebuff((CHARACTERGUID)_Char)
+THEN
+PROC_AMER_KeywordStat_Wither_ManipulatePowerDebuff(_Char);
+
+//Hook into this proc to manipulate DB_AMER_KeywordStat_OUTPUT_Real()
+//--the applied damage debuff from Wither.
+PROC PROC_AMER_KeywordStat_Wither_ManipulatePowerDebuff((CHARACTERGUID)_Char)
+THEN
+DB_NOOP(1);
+
+
+//END_REGION
+
+
+//REGION Cleanup
+
+PROC PROC_AMER_GEN_CharacterBeingRemoved((CHARACTERGUID)_Char)
+AND
+DB_AMER_KeywordStat_Added(_Char, _Keyword, _Amount)
+THEN
+NOT DB_AMER_KeywordStat_Added(_Char, _Keyword, _Amount);
+
+PROC PROC_AMER_GEN_CharacterBeingRemoved((CHARACTERGUID)_Char)
+AND
+DB_AMER_KeywordStat_KeywordMod(_Char, _KeywordMod, _Value)
+THEN
+NOT DB_AMER_KeywordStat_KeywordMod(_Char, _KeywordMod, _Value);
+
+//END_REGION
+
+
+
+
+
+
+
+
+
+//=============================================//
+//               K E Y W O R D S               //
+//                                             //
+//   Written by Matteo "Ameranth" T. (2018)    //
+//=============================================//
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start_AMER"
