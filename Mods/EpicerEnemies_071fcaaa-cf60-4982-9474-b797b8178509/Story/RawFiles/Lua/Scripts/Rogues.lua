@@ -24,7 +24,7 @@ local effects = {
     {
         Name = "A bomb?",
         ID = "CATHE_Archetype_CataclysmMeme",
-        Description = "Oh my god, JC, a bomb!",
+        Description = FormatDescription("Oh my god, JC, a bomb!", "It's funny, trust me, bro"),
         Cost = 45,
         Weight = 1,
         Visible = true,
@@ -47,7 +47,7 @@ local effects = {
     {
         Name = "Crouching manticore",
         ID = "CATHE_Archetype_RoguePaucityBHHide",
-        Description = "Hidden dude",
+        Description = FormatDescription("Hidden dude", "Paucity on 7BH, sneak & invis"),
         Cost = 25,
         Weight = 1,
         Visible = true,
@@ -67,7 +67,7 @@ local effects = {
     {
         Name = "This isn't happening!",
         ID = "CATHE_Archetype_RoguePaucityArmorsHide",
-        Description = "Aaand he's gone",
+        Description = FormatDescription("Aaand he's gone", "Paucity on 0 armor, sneak & invis"),
         Cost = 25,
         Weight = 1,
         Visible = true,
