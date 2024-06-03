@@ -6,7 +6,7 @@ local effects = {
     {
         Name = "Pounder",
         ID = "CATHE_Archetype_CenturionStomp",
-        Description = "I refuse to be brought down by you!",
+        Description = FormatDescription("I refuse to be brought down by you!", "Centurion on ally getting T2/T3, Battlestomps"),
         Cost = 15,
         Weight = 1,
         Visible = true,
