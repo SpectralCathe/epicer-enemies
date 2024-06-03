@@ -6,7 +6,7 @@ local effects = {
     {
         Name = "Dragon RAWR :3",
         ID = "CATHE_Archetype_CenturionDragon",
-        Description = "Don’t stand in my safe space! :(",
+        Description = FormatDescription("Don’t stand in my safe space! :(", "Defiance, if active - Cent on end of turn, gains 2 Ada stacks; Breathe fire on 3 Ada stacks."),
         Cost = 15,
         Weight = 1,
         Visible = true,
@@ -28,7 +28,7 @@ local effects = {
     {
         Name = "BlyadSuka",
         ID = "CATHE_Archetype_CenturionTendies",
-        Description = "Blood for the flayed twins!",
+        Description = FormatDescription("Blood for the flayed twins!", "Defiance, if active - Cent on end of turn, gives tendies."),
         Cost = 15,
         Weight = 1,
         Visible = true,
