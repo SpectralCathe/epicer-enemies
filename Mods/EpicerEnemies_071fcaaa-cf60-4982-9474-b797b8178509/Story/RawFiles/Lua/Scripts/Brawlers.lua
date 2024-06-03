@@ -6,13 +6,15 @@ local effects = {
     {
         Name = "The Black Knight",
         ID = "CATHE_Archetype_PaucityShroud",
-        Description = "Tis but a scratch",
-        Cost = 15,
+        Description = FormatDescription("Tis but a scratch", "Paucity at 25% Vit, Black Shroud end of turn if active"),
+        Cost = 2,
         Weight = 1,
         Visible = true,
         Priority = 100,
         Prerequisites = {
             ["CATHE_Archetype_Base"] = true,
+            ["CATHE_Artifact_Gluttony"] = true,
+            ["CATHE_Artifact_Famine"] = true,
         },
         AllowedAIArchetypes = {
             ["base"] = true,
@@ -23,10 +25,6 @@ local effects = {
         SpecialLogic = {
             "Ascension_Paucity_ACT_VitThreshold",        -- Manticore 4.1
             "Ascension_Paucity_MUTA_EmulateBlackShroud", -- Manticore 5.1
-        },
-        Artifacts = {
-            "Artifact_Gluttony",
-            "Artifact_Famine",
         },
     },
 }
