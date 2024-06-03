@@ -7,7 +7,7 @@ local effects = {
     {
         Name = "Kraken statuses",
         ID = "CATHE_Archetype_ElementalistMutaKraken51",
-        Description = "And make it hurt",
+        Description = FormatDescription("And make it hurt", "Eles apply same damage type DoT"),
         Cost = 10,
         Weight = 5,
         Visible = true,
@@ -22,7 +22,7 @@ local effects = {
     {
         Name = "Fire support",
         ID = "CATHE_Archetype_ElementalistSupport",
-        Description = "WORSHIP THE PILLAR OF FIRE!!!",
+        Description = FormatDescription("WORSHIP THE PILLAR OF FIRE!!!", "Ele on Pred, Cent, Weak 3, Vuln 3"),
         Cost = 25,
         Weight = 1,
         Visible = true,
@@ -49,7 +49,7 @@ local effects = {
     {
         Name = "Blood is fuel",
         ID = "CATHE_Archetype_ElementalistPurityAndEmulation",
-        Description = "Ouch! That hurts!",
+        Description = FormatDescription("Ouch! That hurts!", "Ele on Huntsman/Warfare; Purity on prosperity loss or 30% Vit, gives Ele stacks; Emulate nuke at 5 Ele stacks."),
         Cost = 10,
         Weight = 1,
         Visible = true,
