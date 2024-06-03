@@ -6,7 +6,7 @@ local effects = {
     {
         Name = "Jauffre",
         ID = "CATHE_Archetype_RogueDodgeturionTendies",
-        Description = "Stop right there, criminal scum!",
+        Description = FormatDescription("Stop right there, criminal scum!", "Cent on dodge, gives tendies."),
         Cost = 35,
         Weight = 1,
         Visible = true,
@@ -34,7 +34,7 @@ local effects = {
     {
         Name = "The Drunken Fist",
         ID = "CATHE_Archetype_CenturionVertigo",
-        Description = "We’ll get hit by you next time!",
+        Description = FormatDescription("We’ll get hit by you next time!", "Cent on dodge, high dodge and fatigue, low power."),
         Cost = 25,
         Weight = 1,
         Visible = true,
