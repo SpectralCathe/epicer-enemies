@@ -7,18 +7,16 @@ local effects = {
         Name = "Furtive jihad",
         ID = "CATHE_Archetype_BomberSilkClimb",
         Description = "Gone like the wind!",
-        Cost = 25,
+        Cost = 0,
         Weight = 1,
-        Visible = true,
+        Visible = false,
         Priority = 100,
         Prerequisites = {
             ["CATHE_Archetype_Base"] = true,
+            ["CATHE_Artifact_Silkclimb"] = true,
         },
         AllowedAIArchetypes = {
             ["bomber"] = true,
-        },
-        Artifacts = {
-            "Artifact_Silkclimb"
         },
     },
 }
