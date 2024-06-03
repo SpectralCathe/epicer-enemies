@@ -1,0 +1,23 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+// Bandaid for weird Occu infinite loop thingie
+// Thankee Ameranth for fixing this
+
+PROC PROC_AMER_CharLeftCombat((CHARACTERGUID)_Char, (INTEGER)_Combat)
+AND
+DB_AMER_ExtendedStat_AddedStat(_Char, "CustomDoTTick", _ShootType, _Skill, "CustomDoTTick_Bane", _)
+AND
+HasActiveStatus(_Char, "AMER_BANE", 0)
+AND
+DB_AMER_StatusMod_ExtendedStat_ActiveMods(_Char, _Source, "AMER_BANE", "CustomDoTTick", _ShootType, _Skill, "CustomDoTTick_Bane", _Amount, "CustomDoTTick_Bane")
+THEN
+PROC_AMER_StatusMod_ActiveMods_Clear(_Char, "AMER_BANE");
+PlayEffect(_Char, "RS3_FX_Skills_Voodoo_Curse_Target_Ground_01", "root");
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start_AMER"
