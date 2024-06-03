@@ -20,7 +20,7 @@ local effects = {
     {
         Name = "Borrowed time",
         ID = "CATHE_Archetype_PurityOnVit",
-        Description = "Do that again.",
+        Description = FormatDescription("Do that again.", "Purity on 30% Vit."),
         Cost = 15,
         Weight = 1,
         Visible = true,
@@ -37,7 +37,7 @@ local effects = {
     {
         Name = "Combat regeneration",
         ID = "CATHE_Archetype_PurityOnShieldsUp",
-        Description = "Can’t even penetrate my defences!",
+        Description = FormatDescription("Can’t even penetrate my defences!", "Purity on Shields Up."),
         Cost = 15,
         Weight = 1,
         Visible = true,
@@ -57,7 +57,7 @@ local effects = {
     {
         Name = "Loss",
         ID = "CATHE_Archetype_PurityOnProsperityLost",
-        Description = "...is this?",
+        Description = FormatDescription("...is this?", "Purity on losing Prosperity."),
         Cost = 15,
         Weight = 1,
         Visible = true,
