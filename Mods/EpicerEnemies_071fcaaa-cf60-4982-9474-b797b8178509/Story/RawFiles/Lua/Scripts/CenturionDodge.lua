@@ -63,12 +63,12 @@ local effects = {
             {
                 Type = "Attribute",
                 Stat = "FINESSE",
-                Amount = 50
+                Amount = 25
             },
             {
                 Type = "Attribute",
                 Stat = "INTELLIGENCE",
-                Amount = -20
+                Amount = -10
             },
         },
         Keyword = { Keyword = "Centurion", BoonType = "Activator" },
