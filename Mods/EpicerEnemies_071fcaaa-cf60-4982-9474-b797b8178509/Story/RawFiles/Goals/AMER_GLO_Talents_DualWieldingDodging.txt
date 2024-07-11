@@ -1,0 +1,157 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+
+PROC PROC_AMER_Dodge_Diminish_GetPenalty_Manip((CHARACTERGUID)_Char)
+AND
+CharacterHasTalent(_Char, "DualWieldingDodging", 1)
+AND
+QRY_AMER_GEN_PlayerGetWeaponStyle(_Char)
+AND
+DB_AMER_GEN_OUTPUT_String("DualWielding")
+AND
+DB_AMER_GEN_OUTPUT_Real(_OldPenalty)    //This is negative.
+AND
+RealSum(_OldPenalty, 3.0, _PenaltyFinal)
+THEN
+NOT DB_AMER_GEN_OUTPUT_Real(_OldPenalty);
+DB_AMER_GEN_OUTPUT_Real(_PenaltyFinal);
+
+PROC PROC_AMER_Dodge_Diminish_GetPenalty_Manip((CHARACTERGUID)_Char)
+AND
+CharacterHasTalent(_Char, "DualWieldingDodging", 1)
+AND
+QRY_AMER_GEN_PlayerGetWeaponStyle(_Char)
+AND
+DB_AMER_GEN_OUTPUT_String("TwoHanded")
+AND
+DB_AMER_GEN_OUTPUT_Real(_OldPenalty)    //This is negative.
+AND
+RealSum(_OldPenalty, 3.0, _PenaltyFinal)
+THEN
+NOT DB_AMER_GEN_OUTPUT_Real(_OldPenalty);
+DB_AMER_GEN_OUTPUT_Real(_PenaltyFinal);
+
+
+IF
+NRD_OnHit((CHARACTERGUID)_Defender, (CHARACTERGUID)_Attacker, _Damage, _Handle)
+AND
+CharacterHasTalent(_Defender, "DualWieldingDodging", 1)
+AND
+HasActiveStatus(_Defender, "Derpy_Mirage", 0)
+AND
+QRY_AMER_GEN_PlayerGetWeaponStyle(_Defender)
+AND
+DB_AMER_GEN_OUTPUT_String("DualWielding")
+AND
+_Defender != _Attacker
+AND
+QRY_AMER_GEN_OncePerTurn(_Defender, "Derpy_Talents_DualWieldingDodging")
+AND
+NRD_StatusGetString(_Defender, _Handle, "SkillId", _Skill)
+AND
+QRY_AMER_GetRootSkillID(_Skill)
+AND
+DB_AMER_GEN_OUTPUT_String(_SkillReal)
+AND
+NRD_StatGetString(_SkillReal, "UseWeaponDamage", "No")
+AND
+QRY_Derpy_IsSkillArchetype(_SkillReal)
+AND
+StringContains(_SkillReal, "Trap", 0)
+AND
+StringContains(_SkillReal, "StatusDamage", 0)
+AND
+StringContains(_SkillReal, "SCRIPT", 0)
+AND
+StringContains(_SkillReal, "Quest", 0)
+AND
+QRY_Derpy_DodgeStat(_Defender)
+THEN
+PROC_AMER_GEN_OncePerTurn_Store(_Defender, "Derpy_Talents_DualWieldingDodging");
+NRD_HitStatusClearAllDamage(_Defender, _Handle);
+NRD_StatusSetInt(_Defender,_Handle,"Hit",0);
+NRD_StatusSetInt(_Defender,_Handle,"Missed",0);
+NRD_StatusSetInt(_Defender,_Handle,"Blocked",0);
+NRD_StatusSetInt(_Defender,_Handle,"Dodged",1);
+
+IF
+NRD_OnHit((CHARACTERGUID)_Defender, (CHARACTERGUID)_Attacker, _Damage, _Handle)
+AND
+CharacterHasTalent(_Defender, "DualWieldingDodging", 1)
+AND
+HasActiveStatus(_Defender, "Derpy_Mirage", 0)
+AND
+QRY_AMER_GEN_PlayerGetWeaponStyle(_Defender)
+AND
+DB_AMER_GEN_OUTPUT_String("TwoHanded")
+AND
+_Defender != _Attacker
+AND
+QRY_AMER_GEN_OncePerTurn(_Defender, "Derpy_Talents_DualWieldingDodging")
+AND
+NRD_StatusGetString(_Defender, _Handle, "SkillId", _Skill)
+AND
+QRY_AMER_GetRootSkillID(_Skill)
+AND
+DB_AMER_GEN_OUTPUT_String(_SkillReal)
+AND
+NRD_StatGetString(_SkillReal, "UseWeaponDamage", "No")
+AND
+QRY_Derpy_IsSkillArchetype(_SkillReal)
+AND
+StringContains(_SkillReal, "Trap", 0)
+AND
+StringContains(_SkillReal, "StatusDamage", 0)
+AND
+StringContains(_SkillReal, "SCRIPT", 0)
+AND
+StringContains(_SkillReal, "Quest", 0)
+AND
+QRY_Derpy_DodgeStat(_Defender)
+THEN
+PROC_AMER_GEN_OncePerTurn_Store(_Defender, "Derpy_Talents_DualWieldingDodging");
+NRD_HitStatusClearAllDamage(_Defender, _Handle);
+NRD_StatusSetInt(_Defender,_Handle,"Hit",0);
+NRD_StatusSetInt(_Defender,_Handle,"Missed",0);
+NRD_StatusSetInt(_Defender,_Handle,"Blocked",0);
+NRD_StatusSetInt(_Defender,_Handle,"Dodged",1);
+
+
+QRY QRY_Derpy_DodgeStat((CHARACTERGUID)_Char)
+AND
+String(_Char, _CharStr)
+AND
+NRD_ModQuery1("DerpyAeroTweaks", "GetCharacterDodge", _CharStr, _DodgeStr)
+AND
+NRD_StringToInt(_DodgeStr, _Dodge)
+AND
+QRY_AMER_GEN_RandomSuccess(_Dodge)
+THEN
+DB_NOOP();
+
+
+QRY QRY_Derpy_IsSkillArchetype((STRING)_Skill)
+AND
+StringConcatenate("Projectile", "_.*", _Regex)
+AND
+NRD_RegexMatch(_Skill, _Regex, 1, 1)
+THEN
+DB_NOOP();
+
+
+QRY QRY_Derpy_IsSkillArchetype((STRING)_Skill)
+AND
+StringConcatenate("ProjectileStrike", "_.*", _Regex)
+AND
+NRD_RegexMatch(_Skill, _Regex, 1, 1)
+THEN
+DB_NOOP();
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "AMER_GLO_Talents"
