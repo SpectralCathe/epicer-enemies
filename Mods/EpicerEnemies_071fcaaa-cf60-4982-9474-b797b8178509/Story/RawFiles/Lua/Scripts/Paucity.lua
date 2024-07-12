@@ -37,7 +37,7 @@ local effects = {
         Visible = false,
         Priority = 20,
         Prerequisites = {
-            ["CATHE_Ascension_PaucityWither_Base"] = true,
+            -- ["CATHE_Ascension_PaucityWither_Base"] = true,
         },
         SpecialLogic = {
             "Ascension_Paucity_MUTA_WitherACT_BasicAttack",  -- Wrath 4.1

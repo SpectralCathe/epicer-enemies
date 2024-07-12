@@ -4,6 +4,16 @@ local EpicEnemies = Mods.EpipEncounters.Epip.GetFeature("Feature_EpicEnemies")
 ---@type Features.EpicEnemies.Effect[]
 local effects = {
     {
+        Name = "Purity activator keyword",
+        ID = "CATHE_Keyword_Purity_Activator",
+        Description = "",
+        Cost = 0,
+        Weight = 0,
+        Visible = false,
+        Priority = 20,
+        Keyword = { Keyword = "Purity", BoonType = "Activator" },
+    },
+    {
         Name = "Purity cd reduction",
         ID = "CATHE_Archetype_PurityCdReduction",
         Description = "",
