@@ -17,6 +17,14 @@ function FormatDescription( textBig, textSmall )
 end
 
 
+function RegisterEffects( effects )
+    for _,effect in ipairs(effects) do
+        effect.DiscountPrerequisites = false
+        EpicEnemies.RegisterEffect(effect.ID, effect)
+    end
+end
+
+
 -- Defining archetype base effect and all "no archetype" archetypes
 ---@type Features.EpicEnemies.Effect[]
 local effects = {
@@ -175,6 +183,4 @@ local effects = {
     -- },
 }
 
-for _,effect in ipairs(effects) do
-    EpicEnemies.RegisterEffect(effect.ID, effect)
-end
+RegisterEffects(effects)

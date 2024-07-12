@@ -69,6 +69,4 @@ local effects = {
     },
 }
 
-for _,effect in ipairs(effects) do
-    EpicEnemies.RegisterEffect(effect.ID, effect)
-end
+RegisterEffects(effects)
