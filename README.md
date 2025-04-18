@@ -3,8 +3,15 @@
 ## Documentation
 https://docs.google.com/document/d/1J-HVy7t9LDHRrMIEFV5_12bemz5FNHkCTytelzH-3ms/edit
 
+### Gameplay related changes:
+* Parry Master now works with 2-handed weapons.
+* Dragon 5.3 sets your reaction range to 7 meters, unless already higher.
+
+### Known bugs:
+* Occultists sometimes bugs out. If your character is ticking after combat - kill and revive them to cleanse the debuff. (Won't fix, tried with Amer's help with partial success.)
+
 ## Requirements
-Epic Encounters 2, TEST Epip Encounters, Epip Gameplay, Derpy’s Addon  
+Epic Encounters 2, Epip Encounters, Epip Gameplay, Derpy’s Addon  
 
 ## Installation
 ### Setup
